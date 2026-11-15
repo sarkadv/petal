@@ -1,0 +1,74 @@
+[gd_scene format=3 uid="uid://0dj5uc0j4t3"]
+
+[ext_resource type="Script" uid="uid://hsyerk1m3bjg" path="res://scenes/menu/MainMenu.cs" id="1_script"]
+[ext_resource type="Texture2D" path="res://scenes/menu/menu_background.svg" id="2_background"]
+[ext_resource type="PackedScene" path="res://scenes/menu/settings_screen.tscn" id="3_settings"]
+
+[node name="MainMenu" type="Control" unique_id=1421850291]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Background" type="TextureRect" parent="." unique_id=573458948]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_background")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Home" type="CenterContainer" parent="." unique_id=170262145]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -180.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="Home" unique_id=1734512620]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Title" type="Label" parent="Home/VBox" unique_id=650783111]
+layout_mode = 2
+theme_type_variation = &"TitleLabel"
+text = "petal"
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="Home/VBox" unique_id=413327512]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="Buttons" type="VBoxContainer" parent="Home/VBox" unique_id=195751301]
+custom_minimum_size = Vector2(440, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 18
+
+[node name="PlayButton" type="Button" parent="Home/VBox/Buttons" unique_id=1415337511]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 88)
+layout_mode = 2
+text = "Play"
+
+[node name="SettingsButton" type="Button" parent="Home/VBox/Buttons" unique_id=681606126]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 88)
+layout_mode = 2
+theme_type_variation = &"SecondaryButton"
+text = "Settings"
+
+[node name="Settings" parent="." unique_id=928665585 instance=ExtResource("3_settings")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1

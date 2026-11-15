@@ -1,0 +1,89 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" path="res://ui/icons/arrow_left.svg" id="1_left"]
+[ext_resource type="Texture2D" path="res://ui/icons/arrow_right.svg" id="2_right"]
+
+[node name="SettingsScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 36
+theme_override_constants/margin_top = 60
+theme_override_constants/margin_right = 36
+theme_override_constants/margin_bottom = 60
+
+[node name="Layout" type="VBoxContainer" parent="Margin"]
+layout_mode = 2
+alignment = 1
+
+[node name="Card" type="PanelContainer" parent="Margin/Layout"]
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="Margin/Layout/Card"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Header" type="Label" parent="Margin/Layout/Card/VBox"]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+text = "Settings"
+horizontal_alignment = 1
+
+[node name="Language" type="VBoxContainer" parent="Margin/Layout/Card/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="LanguageLabel" type="Label" parent="Margin/Layout/Card/VBox/Language"]
+layout_mode = 2
+text = "Language"
+
+[node name="Field" type="PanelContainer" parent="Margin/Layout/Card/VBox/Language"]
+layout_mode = 2
+theme_type_variation = &"FieldPanel"
+
+[node name="Row" type="HBoxContainer" parent="Margin/Layout/Card/VBox/Language/Field"]
+layout_mode = 2
+
+[node name="PreviousLanguage" type="Button" parent="Margin/Layout/Card/VBox/Language/Field/Row"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 72)
+layout_mode = 2
+theme_type_variation = &"ArrowButton"
+icon = ExtResource("1_left")
+flat = true
+icon_alignment = 1
+
+[node name="LanguageName" type="Label" parent="Margin/Layout/Card/VBox/Language/Field/Row"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+auto_translate_mode = 2
+text = "English"
+horizontal_alignment = 1
+
+[node name="NextLanguage" type="Button" parent="Margin/Layout/Card/VBox/Language/Field/Row"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 72)
+layout_mode = 2
+theme_type_variation = &"ArrowButton"
+icon = ExtResource("2_right")
+flat = true
+icon_alignment = 1
+
+[node name="BackButton" type="Button" parent="Margin/Layout/Card/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 88)
+layout_mode = 2
+theme_type_variation = &"SecondaryButton"
+text = "Back"

@@ -1,0 +1,12 @@
+<!-- Placeholder menu background until hand-painted ones exist (GAMEPLAY.md §1.1). -->
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="1280" viewBox="0 0 720 1280">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#94c2db"/>
+      <stop offset="0.7" stop-color="#fcedcc"/>
+    </linearGradient>
+  </defs>
+  <rect width="720" height="1280" fill="url(#sky)"/>
+  <path d="M0 860 C180 800 360 830 480 850 S660 880 720 830 V1280 H0 Z" fill="#9eba8f"/>
+  <path d="M0 1030 C200 990 380 1060 540 1020 S700 990 720 1000 V1280 H0 Z" fill="#709466"/>
+</svg>
