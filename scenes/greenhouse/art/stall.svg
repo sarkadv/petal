@@ -1,0 +1,38 @@
+<!-- Placeholder until hand-painted art exists (GAMEPLAY.md §1.1): the garden supplies cabinet, door ajar with seed packets inside, a rake leaning on its right side. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="189" height="154" viewBox="0 0 164 134">
+<g transform="translate(0 -30)">
+<rect x="20" y="52" width="106" height="110" rx="8" fill="#000000" opacity="0.15"></rect>
+
+<rect x="20" y="44" width="96" height="110" rx="5" fill="#a87a4f" stroke="#7a5236" stroke-width="3"></rect>
+<rect x="18" y="145" width="100" height="9" rx="3" fill="#8a5f3e"></rect>
+<rect x="26" y="152" width="16" height="9" rx="4" fill="#5e412d"></rect>
+<rect x="94" y="152" width="16" height="9" rx="4" fill="#5e412d"></rect>
+
+<!-- inside, seen past the open door: a shelf with seed packets -->
+<rect x="28" y="54" width="80" height="88" rx="3" fill="#4f3624"></rect>
+<rect x="28" y="96" width="80" height="3" fill="#7a5236"></rect>
+<g stroke="#fffaf0" stroke-width="1">
+<rect x="94" y="74" width="7" height="22" rx="1" fill="#d9534f"></rect>
+<rect x="101" y="78" width="6" height="18" rx="1" fill="#f4d03f"></rect>
+<rect x="94" y="119" width="7" height="23" rx="1" fill="#f08fb0"></rect>
+<rect x="101" y="122" width="6" height="20" rx="1" fill="#9b6fc4"></rect>
+</g>
+
+<!-- the door, standing a little open -->
+<path d="M28 54 L88 51 V145 L28 142 Z" fill="#b8875a" stroke="#7a5236" stroke-width="2" stroke-linejoin="round"></path>
+<path d="M88 51 L93 52.5 V143.5 L88 145 Z" fill="#8a5f3e"></path>
+<path d="M36 134 V76 Q36 62 58 61 Q80 60 80 74 V136 Z" fill="#c4946a" stroke="#9a6c44" stroke-width="1.5"></path>
+<path d="M58 90 C52 85 52 79 58 74 C64 79 64 85 58 90 Z" fill="#9a6c44"></path>
+<circle cx="83" cy="100" r="4.5" fill="#e8c77a" stroke="#a17b33" stroke-width="1.5"></circle>
+<circle cx="82" cy="99" r="1.5" fill="#fff6e2"></circle>
+
+<rect x="14" y="34" width="108" height="14" rx="6" fill="#7a5236"></rect>
+<rect x="20" y="36" width="96" height="3" rx="1.5" fill="#a87a4f" opacity="0.7"></rect>
+
+<!-- small rake, head down, its handle resting against the cabinet's right side -->
+<ellipse cx="146" cy="158" rx="16" ry="2.5" fill="#000000" opacity="0.15"></ellipse>
+<path d="M119 50 L144 146" stroke="#8a5f3e" stroke-width="4" stroke-linecap="round"></path>
+<path d="M131.4 149.3 L156.6 142.7" stroke="#7f8c8e" stroke-width="4" stroke-linecap="round"></path>
+<path d="M131.4 149.3 L133.2 156.1 M137.7 147.7 L139.5 154.5 M144 146 L145.8 152.8 M150.3 144.4 L152.1 151.2 M156.6 142.7 L158.4 149.5" stroke="#7f8c8e" stroke-width="2.5" stroke-linecap="round"></path>
+</g>
+</svg>

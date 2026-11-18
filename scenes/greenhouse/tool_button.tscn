@@ -1,0 +1,63 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/greenhouse/ToolButton.cs" id="1_script"]
+
+[node name="ToolButton" type="Button"]
+custom_minimum_size = Vector2(120, 144)
+theme_type_variation = &"ToolButton"
+toggle_mode = true
+script = ExtResource("1_script")
+
+[node name="Art" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = -5.0
+offset_top = 4.0
+offset_right = 125.0
+offset_bottom = 100.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Name" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 0.0
+offset_top = 106.0
+offset_right = 120.0
+offset_bottom = 140.0
+theme_type_variation = &"ToolLabel"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Badge" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_left = 62.0
+offset_top = -10.0
+offset_right = 128.0
+offset_bottom = 22.0
+mouse_filter = 2
+theme_type_variation = &"ChipPanel"
+
+[node name="Row" type="HBoxContainer" parent="Badge"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="BadgeIcon" type="TextureRect" parent="Badge/Row"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(22, 22)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BadgeCount" type="Label" parent="Badge/Row"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"ToolLabel"
+auto_translate_mode = 2
+text = "×0"

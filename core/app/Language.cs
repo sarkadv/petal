@@ -15,7 +15,7 @@ public static class Language
 		("cs", "Čeština"),
 	};
 
-	private const string SettingsPath = "user://settings.cfg";
+	public const string SettingsPath = "user://settings.cfg";
 
 	// Starts out matching what TranslationServer shows (the phone's language), so the two
 	// agree even if something reads the language before LoadSaved runs.

@@ -1,0 +1,13 @@
+<!-- Placeholder seed tray (the packets are packets.svg, tinted to the chosen seed). Cut from docs/reference/greenhouse_concept.svg until hand-painted art exists (GAMEPLAY.md §1.1). -->
+<svg xmlns="http://www.w3.org/2000/svg" width="130" height="96" viewBox="0 0 130 96">
+<defs><linearGradient id="d-zinc" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0" stop-color="#d3dcdc"></stop>
+<stop offset="1" stop-color="#a3b0b2"></stop>
+</linearGradient></defs>
+<g transform="translate(65 48)">
+<ellipse cx="4" cy="6" rx="46" ry="30" fill="#000000" opacity="0.15"></ellipse>
+<rect x="-44" y="-30" width="88" height="56" rx="6" fill="#8a6242"></rect>
+<rect x="-38" y="-24" width="76" height="44" rx="4" fill="#6e4c33"></rect>
+
+</g>
+</svg>

@@ -1,0 +1,85 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/greenhouse/seed_stall/StallRow.cs" id="1_script"]
+[ext_resource type="Texture2D" path="res://ui/icons/dot.svg" id="2_dot"]
+[ext_resource type="Texture2D" path="res://ui/icons/coin.svg" id="3_coin"]
+
+[node name="StallRow" type="PanelContainer"]
+theme_type_variation = &"FieldPanel"
+script = ExtResource("1_script")
+_dotIcon = ExtResource("2_dot")
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 12
+
+[node name="VBox" type="VBoxContainer" parent="Margin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Top" type="HBoxContainer" parent="Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Icon" type="TextureRect" parent="Margin/VBox/Top"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_vertical = 4
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Name" type="Label" parent="Margin/VBox/Top"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+auto_translate_mode = 2
+
+[node name="PriceRow" type="HBoxContainer" parent="Margin/VBox/Top"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Coin" type="TextureRect" parent="Margin/VBox/Top/PriceRow"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("3_coin")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Price" type="Label" parent="Margin/VBox/Top/PriceRow"]
+unique_name_in_owner = true
+layout_mode = 2
+auto_translate_mode = 2
+
+[node name="Info" type="Label" parent="Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+auto_translate_mode = 2
+autowrap_mode = 3
+
+[node name="Bottom" type="HBoxContainer" parent="Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Swatches" type="HBoxContainer" parent="Margin/VBox/Bottom"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="Owned" type="Label" parent="Margin/VBox/Bottom"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+auto_translate_mode = 2
+
+[node name="BuyButton" type="Button" parent="Margin/VBox/Bottom"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(140, 72)
+layout_mode = 2
+text = "Buy"

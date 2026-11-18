@@ -1,0 +1,162 @@
+[gd_resource type="Resource" script_class="GameData" format=3]
+
+[ext_resource type="Script" path="res://core/catalogue/GameData.cs" id="1_game"]
+[ext_resource type="Script" path="res://core/catalogue/FlowerData.cs" id="2_flower"]
+[ext_resource type="Script" path="res://core/catalogue/FertilizerData.cs" id="3_fertilizer"]
+[ext_resource type="Texture2D" path="res://ui/icons/fertilizer_growth.svg" id="4_growth_icon"]
+[ext_resource type="Texture2D" path="res://ui/icons/fertilizer_bloom.svg" id="5_bloom_icon"]
+
+[sub_resource type="Resource" id="Resource_daisy"]
+script = ExtResource("2_flower")
+Kind = 0
+Name = "Daisy"
+Colours = Array[int]([2])
+GrowDays = 1
+SeedPrice = 2
+BaseValue = 2
+Tags = PackedStringArray("cheerful", "wild")
+UnlockedAtStart = true
+
+[sub_resource type="Resource" id="Resource_tulip"]
+script = ExtResource("2_flower")
+Kind = 1
+Name = "Tulip"
+Colours = Array[int]([0, 1, 3, 5])
+GrowDays = 2
+SeedPrice = 4
+BaseValue = 4
+Tags = PackedStringArray("cheerful", "romantic")
+UnlockedAtStart = true
+
+[sub_resource type="Resource" id="Resource_carnation"]
+script = ExtResource("2_flower")
+Kind = 2
+Name = "Carnation"
+Colours = Array[int]([0, 1, 2])
+GrowDays = 2
+SeedPrice = 4
+BaseValue = 4
+Tags = PackedStringArray("celebration", "sympathy")
+UnlockedAtStart = true
+
+[sub_resource type="Resource" id="Resource_fern"]
+script = ExtResource("2_flower")
+Kind = 3
+Name = "Fern"
+Colours = Array[int]([7])
+GrowDays = 1
+SeedPrice = 1
+BaseValue = 1
+Tags = PackedStringArray("filler")
+UnlockedAtStart = true
+
+[sub_resource type="Resource" id="Resource_sunflower"]
+script = ExtResource("2_flower")
+Kind = 4
+Name = "Sunflower"
+Colours = Array[int]([3])
+GrowDays = 3
+SeedPrice = 6
+BaseValue = 10
+Tags = PackedStringArray("cheerful", "celebration")
+UnlockedAtStart = false
+
+[sub_resource type="Resource" id="Resource_rose"]
+script = ExtResource("2_flower")
+Kind = 5
+Name = "Rose"
+Colours = Array[int]([0, 1, 2])
+GrowDays = 3
+SeedPrice = 8
+BaseValue = 9
+Tags = PackedStringArray("romantic", "elegant")
+UnlockedAtStart = false
+
+[sub_resource type="Resource" id="Resource_lily"]
+script = ExtResource("2_flower")
+Kind = 6
+Name = "Lily"
+Colours = Array[int]([2, 4, 1])
+GrowDays = 3
+SeedPrice = 9
+BaseValue = 10
+Tags = PackedStringArray("sympathy", "elegant")
+UnlockedAtStart = false
+
+[sub_resource type="Resource" id="Resource_lavender"]
+script = ExtResource("2_flower")
+Kind = 7
+Name = "Lavender"
+Colours = Array[int]([5])
+GrowDays = 2
+SeedPrice = 5
+BaseValue = 4
+Tags = PackedStringArray("calm", "wild")
+UnlockedAtStart = false
+
+[sub_resource type="Resource" id="Resource_peony"]
+script = ExtResource("2_flower")
+Kind = 8
+Name = "Peony"
+Colours = Array[int]([1, 2])
+GrowDays = 4
+SeedPrice = 14
+BaseValue = 16
+Tags = PackedStringArray("romantic", "celebration")
+UnlockedAtStart = false
+
+[sub_resource type="Resource" id="Resource_orchid"]
+script = ExtResource("2_flower")
+Kind = 9
+Name = "Orchid"
+Colours = Array[int]([5, 2])
+GrowDays = 5
+SeedPrice = 25
+BaseValue = 35
+Tags = PackedStringArray("elegant", "rare")
+UnlockedAtStart = false
+
+[sub_resource type="Resource" id="Resource_blue_rose"]
+script = ExtResource("2_flower")
+Kind = 10
+Name = "Blue Rose"
+Colours = Array[int]([6])
+GrowDays = 6
+SeedPrice = 40
+BaseValue = 60
+Tags = PackedStringArray("romantic", "rare")
+UnlockedAtStart = false
+
+[sub_resource type="Resource" id="Resource_growth"]
+script = ExtResource("3_fertilizer")
+Kind = 0
+Name = "Growth fertilizer"
+Description = "Ready a day sooner"
+Icon = ExtResource("4_growth_icon")
+Price = 5
+SoilTint = Color(0.45, 0.75, 0.35, 0.2)
+
+[sub_resource type="Resource" id="Resource_bloom"]
+script = ExtResource("3_fertilizer")
+Kind = 1
+Name = "Bloom fertilizer"
+Description = "Better chance of one more star"
+Icon = ExtResource("5_bloom_icon")
+Price = 5
+SoilTint = Color(0.65, 0.4, 0.8, 0.2)
+
+[resource]
+script = ExtResource("1_game")
+StartingMoney = 100
+StartingPlots = 6
+MinHarvestStems = 3
+MaxHarvestStems = 6
+StarterSeeds = Dictionary[String, int]({
+"Daisy:White": 6,
+"Fern:Green": 2,
+"Tulip:Red": 2,
+"Tulip:Yellow": 2
+})
+BloomStarChance = 0.4
+Flowers = Array[ExtResource("2_flower")]([SubResource("Resource_daisy"), SubResource("Resource_tulip"), SubResource("Resource_carnation"), SubResource("Resource_fern"), SubResource("Resource_sunflower"), SubResource("Resource_rose"), SubResource("Resource_lily"), SubResource("Resource_lavender"), SubResource("Resource_peony"), SubResource("Resource_orchid"), SubResource("Resource_blue_rose")])
+Fertilizers = Array[ExtResource("3_fertilizer")]([SubResource("Resource_growth"), SubResource("Resource_bloom")])

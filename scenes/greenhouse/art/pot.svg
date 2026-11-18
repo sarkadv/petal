@@ -1,0 +1,9 @@
+<!-- Placeholder top-down art (GAMEPLAY.md §1.1). -->
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180">
+<circle cx="97" cy="99" r="80" fill="#000000" opacity="0.15"/>
+<circle cx="90" cy="90" r="84" fill="#c8714e" stroke="#a95a3b" stroke-width="3"/>
+<circle cx="90" cy="90" r="70" fill="#b5603f"/>
+<circle cx="90" cy="93" r="62" fill="#5e412d"/>
+<g fill="#7a5840"><circle cx="62" cy="70" r="3"/><circle cx="118" cy="66" r="2.5"/><circle cx="126" cy="116" r="3"/><circle cx="58" cy="118" r="2.5"/><circle cx="92" cy="140" r="3"/><circle cx="96" cy="46" r="2"/></g>
+<path d="M30 60 A70 70 0 0 1 110 18" stroke="#e39a78" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.7"/>
+</svg>

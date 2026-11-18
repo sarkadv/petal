@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GdUnit4 test settings, used by `dotnet test` (see CLAUDE.md). The Godot path comes from the GODOT_BIN environment variable, set per machine. -->
+<RunSettings>
+  <RunConfiguration>
+    <MaxCpuCount>1</MaxCpuCount>
+    <ResultsDirectory>./TestResults</ResultsDirectory>
+    <TestSessionTimeout>600000</TestSessionTimeout>
+    <TreatNoTestsAsError>true</TreatNoTestsAsError>
+  </RunConfiguration>
+  <GdUnit4>
+    <Parameters>--headless</Parameters>
+    <DisplayName>FullyQualifiedName</DisplayName>
+    <CaptureStdOut>true</CaptureStdOut>
+    <CompileProcessTimeout>300000</CompileProcessTimeout>
+    <GodotConnectTimeout>60000</GodotConnectTimeout>
+  </GdUnit4>
+</RunSettings>

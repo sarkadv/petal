@@ -4,5 +4,21 @@
     <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'android' ">net9.0</TargetFramework>
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <RootNamespace>Petal</RootNamespace>
+    <IsExportBuild Condition=" '$(Configuration)' == 'ExportDebug' Or '$(Configuration)' == 'ExportRelease' ">true</IsExportBuild>
   </PropertyGroup>
+
+  <!-- GdUnit4 tests (tests/, run with `dotnet test`) are only built for the editor, never into exported games. -->
+  <ItemGroup Condition=" '$(IsExportBuild)' != 'true' ">
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
+    <PackageReference Include="gdUnit4.api" Version="5.1.0-rc6" />
+    <PackageReference Include="gdUnit4.test.adapter" Version="3.2.0" />
+    <PackageReference Include="gdUnit4.analyzers" Version="1.1.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup Condition=" '$(IsExportBuild)' == 'true' ">
+    <Compile Remove="tests/**" />
+    <Compile Remove="gdunit4_testadapter_v5/**" />
+  </ItemGroup>
 </Project>

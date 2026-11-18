@@ -1,0 +1,5 @@
+<!-- Placeholder top-down art (GAMEPLAY.md §1.1). -->
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 60 60">
+<ellipse cx="30" cy="30" rx="6" ry="26" fill="#7fb069" transform="rotate(35 30 30)"/>
+<ellipse cx="30" cy="30" rx="6" ry="24" fill="#6f9f5c" transform="rotate(-50 30 30)"/>
+</svg>

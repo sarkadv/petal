@@ -1,0 +1,14 @@
+<!-- Placeholder stack of seed packets on the seed tray. White so it can be tinted to the chosen seed's colour;
+     drawn in tool_seeds.svg's 130x96 box so it lines up with the tray. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="130" height="96" viewBox="0 0 130 96">
+<g transform="translate(65 48)" stroke="#c9c1b4" stroke-width="1.5">
+<rect x="-34" y="-26" width="28" height="40" rx="3" fill="#e4e4e4" transform="rotate(-10 -20 -6)"/>
+<rect x="-12" y="-24" width="28" height="40" rx="3" fill="#f2f2f2" transform="rotate(4 2 -4)"/>
+<rect x="10" y="-24" width="28" height="40" rx="3" fill="#ffffff" transform="rotate(12 24 -4)"/>
+<g fill="#b8b0a3" stroke="none">
+<circle cx="-21" cy="-8" r="4" transform="rotate(-10 -20 -6)"/>
+<circle cx="2" cy="-6" r="4" transform="rotate(4 2 -4)"/>
+<circle cx="24" cy="-6" r="4" transform="rotate(12 24 -4)"/>
+</g>
+</g>
+</svg>

@@ -1,0 +1,13 @@
+<!-- Placeholder cut from docs/reference/greenhouse_concept.svg until hand-painted art exists (GAMEPLAY.md §1.1). -->
+<svg xmlns="http://www.w3.org/2000/svg" width="130" height="96" viewBox="0 0 130 96">
+<defs><linearGradient id="d-zinc" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0" stop-color="#d3dcdc"></stop>
+<stop offset="1" stop-color="#a3b0b2"></stop>
+</linearGradient></defs>
+<g transform="translate(65 48)">
+<ellipse cx="4" cy="6" rx="38" ry="30" fill="#000000" opacity="0.15"></ellipse>
+<path d="M-34 -8 C-36 -26 -16 -32 0 -30 C16 -32 36 -26 34 -8 C38 12 30 28 0 28 C-30 28 -38 12 -34 -8 Z" fill="#e6d3ad" stroke="#a88a5c" stroke-width="3"></path>
+<path d="M-10 -30 L0 -22 L10 -30" stroke="#a88a5c" stroke-width="3" fill="none"></path>
+<path d="M0 14 V-4 M0 2 C-8 2 -11 -4 -11 -9 M0 -1 C8 -1 11 -7 11 -12" stroke="#6f9a62" stroke-width="3.5" fill="none" stroke-linecap="round"></path>
+</g>
+</svg>

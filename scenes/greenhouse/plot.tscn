@@ -1,0 +1,115 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/greenhouse/PlotView.cs" id="1_script"]
+[ext_resource type="Texture2D" path="res://scenes/greenhouse/art/seedling.svg" id="2_seedling"]
+[ext_resource type="Texture2D" path="res://scenes/greenhouse/art/bud.svg" id="3_bud"]
+[ext_resource type="Texture2D" path="res://scenes/greenhouse/art/leaves.svg" id="4_leaves"]
+[ext_resource type="Texture2D" path="res://scenes/greenhouse/art/bloom.svg" id="5_bloom"]
+[ext_resource type="Texture2D" path="res://scenes/greenhouse/art/withered.svg" id="6_withered"]
+[ext_resource type="Texture2D" path="res://scenes/greenhouse/art/dead.svg" id="7_dead"]
+[ext_resource type="Texture2D" path="res://scenes/greenhouse/art/pot.svg" id="10_pot"]
+[ext_resource type="Texture2D" path="res://scenes/greenhouse/art/wet_soil.svg" id="11_wet"]
+[ext_resource type="Texture2D" path="res://scenes/greenhouse/art/soil_tint.svg" id="12_tint"]
+
+[node name="Plot" type="Button"]
+custom_minimum_size = Vector2(180, 180)
+theme_type_variation = &"ObjectButton"
+script = ExtResource("1_script")
+_seedling = ExtResource("2_seedling")
+_bud = ExtResource("3_bud")
+_leaves = ExtResource("4_leaves")
+_withered = ExtResource("6_withered")
+_dead = ExtResource("7_dead")
+
+[node name="Pot" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 180.0
+offset_bottom = 180.0
+mouse_filter = 2
+texture = ExtResource("10_pot")
+expand_mode = 1
+
+[node name="WetSoil" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 180.0
+offset_bottom = 180.0
+mouse_filter = 2
+texture = ExtResource("11_wet")
+expand_mode = 1
+
+[node name="FertilizedSoil" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 180.0
+offset_bottom = 180.0
+mouse_filter = 2
+texture = ExtResource("12_tint")
+expand_mode = 1
+
+[node name="Plants" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 180.0
+offset_bottom = 180.0
+mouse_filter = 2
+
+[node name="Plant1" type="TextureRect" parent="Plants"]
+layout_mode = 0
+offset_left = 42.0
+offset_top = 40.0
+offset_right = 98.0
+offset_bottom = 96.0
+mouse_filter = 2
+expand_mode = 1
+
+[node name="Bloom" type="TextureRect" parent="Plants/Plant1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("5_bloom")
+expand_mode = 1
+
+[node name="Plant2" type="TextureRect" parent="Plants"]
+layout_mode = 0
+offset_left = 84.0
+offset_top = 62.0
+offset_right = 138.0
+offset_bottom = 116.0
+mouse_filter = 2
+expand_mode = 1
+
+[node name="Bloom" type="TextureRect" parent="Plants/Plant2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("5_bloom")
+expand_mode = 1
+
+[node name="Plant3" type="TextureRect" parent="Plants"]
+layout_mode = 0
+offset_left = 46.0
+offset_top = 94.0
+offset_right = 96.0
+offset_bottom = 144.0
+mouse_filter = 2
+expand_mode = 1
+
+[node name="Bloom" type="TextureRect" parent="Plants/Plant3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("5_bloom")
+expand_mode = 1

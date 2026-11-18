@@ -41,7 +41,7 @@ public partial class MainMenu : Control
 
 	private void OnPlayPressed()
 	{
-		// TODO: start the game once there is something to start.
+		GetTree().ChangeSceneToFile(Scenes.Greenhouse);
 	}
 
 	private void OnSettingsPressed()

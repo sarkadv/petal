@@ -25,6 +25,7 @@ You run a small florist shop. Every day you grow flowers in your greenhouse and 
 - Small living details: dust in sunbeams, leaves swaying, a cat asleep on the windowsill, steam from a teacup on the desk.
 - A palette of muted greens, creams and sky blues, with the flowers as the brightest, most saturated things on screen so the bouquets stand out.
 - Customers are illustrated townsfolk drawn from a mix-and-match set of parts (faces, hair, clothes) so customers look varied.
+- Money is shown as a gold coin icon next to the amount, never with a currency symbol. (`$` figures in this doc are just shorthand for coins.)
 
 ---
 
@@ -32,7 +33,7 @@ You run a small florist shop. Every day you grow flowers in your greenhouse and 
 
 | Button | Behaviour |
 |---|---|
-| **Play** | Opens a save-slot screen with 3 slots. An empty slot starts a new game; a filled slot shows *Day N · $money* and has **Continue** or **Delete**. |
+| **Play** | Opens a save-slot screen with 3 slots. An empty slot starts a new game; a filled slot shows *Day N* and the money (gold coin + amount) and has **Continue** or **Delete**. |
 | **Settings** | Language
 
 The shop is always called **Petal**. A new game goes straight into a short tutorial day (see §10).
@@ -59,7 +60,7 @@ The shop is always called **Petal**. A new game goes straight into a short tutor
 
 ## 4. Phase 1 — Morning: The Greenhouse
 
-The greenhouse is a grid of **plots** (start: 6 plots, 2×3). No time limit; press **"Open Shop"** when you're done.
+The greenhouse is a grid of **plots**, drawn as round pots (start: 6 plots, 2×3). No time limit; go through the **Open Shop** door when you're done. How the screen looks and is used is in [GREENHOUSE.md](GREENHOUSE.md).
 
 ### 4.1 Plot states
 
@@ -72,23 +73,24 @@ EMPTY ──plant──▶ SEEDLING ──(days)──▶ GROWING ──(days)�
 							 DEAD
 ```
 
-- **Not watered:** a SEEDLING or GROWING plant that isn't watered in the morning **dies** that night. The seed and any fertilizer used on it are lost.
-- **Not harvested:** a READY plant can be harvested on the day it ripens or the day after. If it's still not picked after 2 days it **withers** and yields nothing.
+- **Not watered:** a SEEDLING or GROWING plant that isn't watered in the morning **dies** that night. The seed and any Bloom chance it had are lost.
+- **Not harvested:** a READY plant can be harvested on the day it ripens or the day after. If it's still not picked after 2 days it **withers**, yields nothing, and its Bloom chance is lost.
 - DEAD and WITHERED plots must be **cleared** before you can plant there again.
+- Water dries overnight. Fertilizer works overnight on the plant in the plot at that moment, then it's used up. A plant keeps what the fertilizer gave it (see Fertilize below).
 
 ### 4.2 Actions
 
 | Action | Cost | Effect |
 |---|---|---|
-| **Plant** | Seed price (varies) | Pick a seed from your seed stock and drop it in an empty plot. |
-| **Water** | Free | Every SEEDLING or GROWING plant must be watered **each morning**, or it dies. |
-| **Fertilize** | Fertilizer item (bought) | Choose one per planting: **Growth** (−1 day to maturity, min 1) or **Bloom** (+1 quality tier at harvest). |
-| **Harvest** | Free | Moves the stems into today's inventory. |
+| **Plant** | Seed price (varies) | Pick a seed from your seed stock and plant it in an empty plot. Planting doesn't water it, but a seed planted into soil that's already wet that day counts as watered, and one planted into fertilized soil gets the fertilizer that night. |
+| **Water** | Free | Any plot, once a day. Every SEEDLING or GROWING plant must be watered **each morning**, or it dies; watering anything else just wets the soil until night. |
+| **Fertilize** | Fertilizer item (bought) | Any plot, once a day: **Growth** (−1 day to maturity each day it's used; a plant due to ripen tomorrow still just ripens tomorrow) or **Bloom** (a chance of +1 quality tier at harvest. Each use is its own try with chance *p*, so after *n* uses the chance is 1 − (1 − *p*)ⁿ: it rises with every use but never reaches 100%. *p* = 0.4, set as `BloomStarChance` in the game data). It does nothing right away: it works **overnight**, on whatever plant is in the plot then, and is used up. So fertilizing and then clearing or harvesting the plot helps only a seed planted there the same day, and fertilizer in a plot left empty is wasted. Days taken off and Bloom's chance stay with the plant; Bloom's chance is lost if the plant is cleared, dies or withers. |
+| **Harvest** | Free | Moves **3–6 stems** (random) into today's inventory and empties the plot. |
 | **Clear** | Free | Removes a dead, withered or unwanted plant. |
 
-### 4.3 Seed & supply stall
+### 4.3 Garden supplies
 
-A small stall in the corner of the greenhouse sells seeds and fertilizer. It always stocks **every seed you've unlocked**, in any amount, at fixed prices. For flowers that come in several colours, you **pick the colour** when buying (e.g. *Tulip seeds — red*). Each colour is a separate seed item in your stock. There's no random rotation, so you can plan exactly what to grow.
+A small cabinet in the greenhouse, called **Garden supplies** (*Kůlna* in Czech), sells seeds and fertilizer on two tabs, **Seeds** and **Fertilizers**. It always stocks **every seed you've unlocked**, in any amount, at fixed prices. For flowers that come in several colours, you **pick the colour** when buying (e.g. *Tulip seeds — red*). Each colour is a separate seed item in your stock. There's no random rotation, so you can plan exactly what to grow. Both fertilizers cost $5 each (placeholder).
 
 ### 4.4 Flowers
 
@@ -96,26 +98,27 @@ Each flower has:
 
 - **Colours:** the colours this flower comes in, chosen from red, pink, white, yellow, orange, purple, blue and green. Some flowers have only one colour (daisy, sunflower, lavender); others have several (tulip, rose).
 - **Grow time:** in days
-- **Yield:** stems per harvest
 - **Base value:** what one stem is worth in a bouquet
 - **Tags:** the meanings and moods customers ask for, e.g. `romantic`, `cheerful`, `sympathy`, `elegant`, `wild`, `celebration`
-- **Quality:** ★ / ★★ / ★★★, decided at harvest by care (Bloom fertilizer, upgrades, harvesting on the day it ripens rather than the day after)
+- **Quality:** stars, decided at harvest by care: ★ to start, +1 for harvesting on the day it ripens rather than the day after, +1 by chance with Bloom fertilizer (rolled at harvest, see §4.2). Upgrades like Rich soil (§7) add more. There's no upper limit
+
+Every harvest gives **3–6 stems** at random, whatever the flower (balancing decision to confirm once the shop exists; set in `data/game_data.tres`).
 
 Starter catalogue (examples to balance later):
 
-| Flower | Colours | Grow | Yield | Seed $ | Base $ | Tags | How to unlock |
-|---|---|---|---|---|---|---|---|
-| Daisy | white | 1 | 4 | 2 | 2 | cheerful, wild | start |
-| Tulip | red, pink, yellow, purple | 2 | 3 | 4 | 4 | cheerful, romantic | start |
-| Carnation | red, pink, white | 2 | 3 | 4 | 4 | celebration, sympathy | start |
-| Fern / greenery | green | 1 | 5 | 1 | 1 | filler (fits everything) | start |
-| Sunflower | yellow | 3 | 1 | 6 | 10 | cheerful, celebration | Seed catalog: Garden |
-| Rose | red, pink, white | 3 | 2 | 8 | 9 | romantic, elegant | Seed catalog: Garden |
-| Lily | white, orange, pink | 3 | 2 | 9 | 10 | sympathy, elegant | Seed catalog: Classic |
-| Lavender | purple | 2 | 4 | 5 | 4 | calm, wild | Seed catalog: Wildflower |
-| Peony | pink, white | 4 | 2 | 14 | 16 | romantic, celebration | Seed catalog: Classic |
-| Orchid | purple, white | 5 | 1 | 25 | 35 | elegant, rare | Heater upgrade |
-| Blue Rose | blue | 6 | 1 | 40 | 60 | romantic, rare | Heater + completing the Exotic journal set (§8) |
+| Flower | Colours | Grow | Seed $ | Base $ | Tags | How to unlock |
+|---|---|---|---|---|---|---|
+| Daisy | white | 1 | 2 | 2 | cheerful, wild | start |
+| Tulip | red, pink, yellow, purple | 2 | 4 | 4 | cheerful, romantic | start |
+| Carnation | red, pink, white | 2 | 4 | 4 | celebration, sympathy | start |
+| Fern / greenery | green | 1 | 1 | 1 | filler (fits everything) | start |
+| Sunflower | yellow | 3 | 6 | 10 | cheerful, celebration | Seed catalog: Garden |
+| Rose | red, pink, white | 3 | 8 | 9 | romantic, elegant | Seed catalog: Garden |
+| Lily | white, orange, pink | 3 | 9 | 10 | sympathy, elegant | Seed catalog: Classic |
+| Lavender | purple | 2 | 5 | 4 | calm, wild | Seed catalog: Wildflower |
+| Peony | pink, white | 4 | 14 | 16 | romantic, celebration | Seed catalog: Classic |
+| Orchid | purple, white | 5 | 25 | 35 | elegant, rare | Heater upgrade |
+| Blue Rose | blue | 6 | 40 | 60 | romantic, rare | Heater + completing the Exotic journal set (§8) |
 
 ### 4.5 Inventory rule
 
@@ -138,7 +141,7 @@ Pressing **Open Shop** moves you to the shop scene: a front desk, the customer s
 One customer at a time comes up to the desk. The customers spawn indefinitely, until the shop closes. Customers are randomly generated townsfolk. Each has:
 
 - **Request:** what they want (see below)
-- **Budget:** a rough figure the player can see as `$`, `$$` or `$$$`
+- **Budget:** a rough figure the player can see as one, two or three gold coins
 - **Personality:** affects what they care about most (e.g. *Romantic* likes colour harmony, *Practical* cares about price, *Collector* wants rare flowers)
 
 ### 5.3 Request types
@@ -179,7 +182,7 @@ Satisfaction is scored 0–100 from weighted parts (the weights shift with perso
 | **Request match** | Right flowers and counts (Specific), or how well the tags fit (Vague). This is the biggest weight. |
 | **Colour harmony** | Do the colours go together? (complementary, analogous, all one colour = good; clashing = bad) |
 | **Quality** | Average star rating of the stems. |
-| **Size vs budget** | Too skimpy for a `$$$` customer is bad; a huge bouquet for a `$` customer is wasted value (they won't pay more than their budget). |
+| **Size vs budget** | Too skimpy for a three-coin customer is bad; a huge bouquet for a one-coin customer is wasted value (they won't pay more than their budget). |
 | **Decorations** | Small bonus, larger for customers who like them. |
 
 **Payment** = `min(bouquet value, budget cap) × satisfaction multiplier + tip`
@@ -273,6 +276,7 @@ You can save **favourite bouquets** to a photo album, and pin a few of them as f
 
 - Starting money: **$100**, plus a starter pack of 6 daisy, 2 red tulip, 2 yellow tulip and 2 fern seeds.
 - Typical early bouquet: 5–7 stems ≈ $15–30. About 4 customers a day ≈ **$80/day**, minus a few $ for seeds.
+- Every harvest now gives 3–6 stems whatever the flower (§4.4), so slow, expensive flowers yield far more than first planned. Rebalance these numbers once the shop exists.
 - First catalog or upgrade (~$100–200) should be affordable within 2–3 days, so the early game has quick, frequent rewards.
 - Later upgrades cost more ($500–2000) to stretch progression over weeks of play.
 - Rare flowers pay off best through advance orders or Collector customers, so growing them is a planned project rather than a gamble.

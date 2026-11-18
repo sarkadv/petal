@@ -1,0 +1,316 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/greenhouse/Greenhouse.cs" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/greenhouse/plot.tscn" id="2_plot"]
+[ext_resource type="Texture2D" path="res://ui/icons/dot.svg" id="3_dot"]
+[ext_resource type="Texture2D" path="res://scenes/greenhouse/art/background.svg" id="4_background"]
+[ext_resource type="Texture2D" path="res://ui/icons/arrow_back.svg" id="5_back"]
+[ext_resource type="Texture2D" path="res://scenes/greenhouse/art/tool_harvest.svg" id="6_harvest"]
+[ext_resource type="Texture2D" path="res://scenes/greenhouse/art/tool_seeds.svg" id="7_seeds"]
+[ext_resource type="Texture2D" path="res://scenes/greenhouse/art/tool_water.svg" id="8_water"]
+[ext_resource type="Texture2D" path="res://scenes/greenhouse/art/tool_fertilizer.svg" id="9_fertilizer"]
+[ext_resource type="Texture2D" path="res://scenes/greenhouse/art/tool_clear.svg" id="10_clear"]
+[ext_resource type="PackedScene" path="res://scenes/greenhouse/seed_stall/seed_stall.tscn" id="11_stall"]
+[ext_resource type="PackedScene" path="res://scenes/greenhouse/popovers/choice_popover.tscn" id="12_choice_popover"]
+[ext_resource type="Texture2D" path="res://ui/icons/coin.svg" id="13_coin"]
+[ext_resource type="Texture2D" path="res://scenes/greenhouse/art/stall.svg" id="14_stall_art"]
+[ext_resource type="Texture2D" path="res://ui/icons/arrow_down.svg" id="15_down"]
+[ext_resource type="Texture2D" path="res://scenes/greenhouse/art/packets.svg" id="16_packets"]
+[ext_resource type="PackedScene" path="res://scenes/greenhouse/popovers/info_popover.tscn" id="17_info_popover"]
+[ext_resource type="PackedScene" path="res://scenes/greenhouse/tool_button.tscn" id="18_tool"]
+[ext_resource type="Script" path="res://core/ui/Overlay.cs" id="19_overlay"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_tools"]
+resource_local_to_scene = false
+
+[node name="Greenhouse" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+_plotScene = ExtResource("2_plot")
+_dotIcon = ExtResource("3_dot")
+
+[node name="Grass" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.6157, 0.7412, 0.5333, 1)
+
+[node name="Stage" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -360.0
+offset_top = -640.0
+offset_right = 360.0
+offset_bottom = 640.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Background" type="TextureRect" parent="Stage"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 720.0
+offset_bottom = 1280.0
+mouse_filter = 2
+texture = ExtResource("4_background")
+expand_mode = 1
+
+[node name="BackButton" type="Button" parent="Stage"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 28.0
+offset_top = 18.0
+offset_right = 100.0
+offset_bottom = 90.0
+theme_type_variation = &"WoodButton"
+icon = ExtResource("5_back")
+icon_alignment = 1
+
+[node name="DayLabel" type="Label" parent="Stage"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 112.0
+offset_top = 22.0
+offset_right = 262.0
+offset_bottom = 86.0
+theme_type_variation = &"ChalkboardLabel"
+auto_translate_mode = 2
+text = "Day 1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Wallet" type="PanelContainer" parent="Stage"]
+layout_mode = 0
+offset_left = 462.0
+offset_top = 22.0
+offset_right = 696.0
+offset_bottom = 86.0
+theme_type_variation = &"PillPanel"
+
+[node name="Row" type="HBoxContainer" parent="Stage/Wallet"]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="StemIcon" type="TextureRect" parent="Stage/Wallet/Row"]
+custom_minimum_size = Vector2(44, 32)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("6_harvest")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="StemCount" type="Label" parent="Stage/Wallet/Row"]
+unique_name_in_owner = true
+layout_mode = 2
+auto_translate_mode = 2
+text = "0"
+
+[node name="Gap" type="Control" parent="Stage/Wallet/Row"]
+custom_minimum_size = Vector2(8, 0)
+layout_mode = 2
+
+[node name="Coins" type="TextureRect" parent="Stage/Wallet/Row"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("13_coin")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MoneyLabel" type="Label" parent="Stage/Wallet/Row"]
+unique_name_in_owner = true
+layout_mode = 2
+auto_translate_mode = 2
+text = "100"
+
+[node name="Tools" type="HBoxContainer" parent="Stage"]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 128.0
+offset_right = 684.0
+offset_bottom = 272.0
+theme_override_constants/separation = 12
+
+[node name="SeedsTool" parent="Stage/Tools" instance=ExtResource("18_tool")]
+unique_name_in_owner = true
+layout_mode = 2
+button_group = SubResource("ButtonGroup_tools")
+_art = ExtResource("7_seeds")
+_label = "Seeds"
+
+[node name="SeedPacket" type="TextureRect" parent="Stage/Tools/SeedsTool" index="1"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = -5.0
+offset_top = 4.0
+offset_right = 125.0
+offset_bottom = 100.0
+mouse_filter = 2
+texture = ExtResource("16_packets")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="WaterTool" parent="Stage/Tools" instance=ExtResource("18_tool")]
+unique_name_in_owner = true
+layout_mode = 2
+button_group = SubResource("ButtonGroup_tools")
+_art = ExtResource("8_water")
+_label = "Water"
+
+[node name="FertilizerTool" parent="Stage/Tools" instance=ExtResource("18_tool")]
+unique_name_in_owner = true
+layout_mode = 2
+button_group = SubResource("ButtonGroup_tools")
+_art = ExtResource("9_fertilizer")
+_label = "Fertilize"
+
+[node name="HarvestTool" parent="Stage/Tools" instance=ExtResource("18_tool")]
+unique_name_in_owner = true
+layout_mode = 2
+button_group = SubResource("ButtonGroup_tools")
+_art = ExtResource("6_harvest")
+_label = "Harvest"
+
+[node name="ClearTool" parent="Stage/Tools" instance=ExtResource("18_tool")]
+unique_name_in_owner = true
+layout_mode = 2
+button_group = SubResource("ButtonGroup_tools")
+_art = ExtResource("10_clear")
+_label = "Clear"
+
+[node name="StallButton" type="Button" parent="Stage"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 282.0
+offset_top = 300.0
+offset_right = 471.0
+offset_bottom = 454.0
+theme_type_variation = &"ObjectButton"
+
+[node name="Art" type="TextureRect" parent="Stage/StallButton"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 189.0
+offset_bottom = 154.0
+mouse_filter = 2
+texture = ExtResource("14_stall_art")
+expand_mode = 1
+
+[node name="Plots" type="GridContainer" parent="Stage"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 60.0
+offset_top = 350.0
+offset_right = 660.0
+offset_bottom = 1050.0
+mouse_filter = 2
+theme_override_constants/h_separation = 240
+theme_override_constants/v_separation = 60
+columns = 2
+
+[node name="OpenShopButton" type="Button" parent="Stage"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 234.0
+offset_top = 1096.0
+offset_right = 486.0
+offset_bottom = 1180.0
+grow_horizontal = 2
+theme_type_variation = &"ShopSignButton"
+text = "Open Shop"
+icon = ExtResource("15_down")
+icon_alignment = 2
+
+[node name="SeedStall" parent="." instance=ExtResource("11_stall")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+
+[node name="ChoicePopover" parent="." instance=ExtResource("12_choice_popover")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+
+[node name="InfoPopover" parent="." instance=ExtResource("17_info_popover")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+
+[node name="ConfirmClear" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("19_overlay")
+
+[node name="Dim" type="Panel" parent="ConfirmClear"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_type_variation = &"DimPanel"
+
+[node name="Center" type="CenterContainer" parent="ConfirmClear"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Card" type="PanelContainer" parent="ConfirmClear/Center"]
+custom_minimum_size = Vector2(560, 0)
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="ConfirmClear/Center/Card"]
+layout_mode = 2
+theme_override_constants/separation = 28
+
+[node name="Question" type="Label" parent="ConfirmClear/Center/Card/VBox"]
+layout_mode = 2
+text = "Remove this plant?"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Buttons" type="HBoxContainer" parent="ConfirmClear/Center/Card/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="KeepButton" type="Button" parent="ConfirmClear/Center/Card/VBox/Buttons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 88)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"SecondaryButton"
+text = "Keep"
+
+[node name="RemoveButton" type="Button" parent="ConfirmClear/Center/Card/VBox/Buttons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 88)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Remove"
