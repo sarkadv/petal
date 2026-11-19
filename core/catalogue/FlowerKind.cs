@@ -17,4 +17,5 @@ public enum FlowerKind
 	Peony = 8,
 	Orchid = 9,
 	BlueRose = 10,
+	Dahlia = 11,
 }

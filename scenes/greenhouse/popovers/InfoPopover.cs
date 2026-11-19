@@ -24,7 +24,7 @@ public partial class InfoPopover : Popover
 	public void ShowText(Control anchor, string text)
 	{
 		_text.Text = text;
-		ShowBy(anchor, Panel.GetCombinedMinimumSize().X);
+		_ = ShowBy(anchor, Panel.GetCombinedMinimumSize().X);
 	}
 
 	protected override Vector2 PositionBy(Rect2 anchor, Vector2 size)

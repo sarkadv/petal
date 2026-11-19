@@ -1,6 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scenes/greenhouse/ToolButton.cs" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/greenhouse/count_badge.tscn" id="2_badge"]
 
 [node name="ToolButton" type="Button"]
 custom_minimum_size = Vector2(120, 144)
@@ -30,7 +31,7 @@ theme_type_variation = &"ToolLabel"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Badge" type="PanelContainer" parent="."]
+[node name="Badge" parent="." instance=ExtResource("2_badge")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 0
@@ -38,26 +39,3 @@ offset_left = 62.0
 offset_top = -10.0
 offset_right = 128.0
 offset_bottom = 22.0
-mouse_filter = 2
-theme_type_variation = &"ChipPanel"
-
-[node name="Row" type="HBoxContainer" parent="Badge"]
-layout_mode = 2
-mouse_filter = 2
-theme_override_constants/separation = 4
-
-[node name="BadgeIcon" type="TextureRect" parent="Badge/Row"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(22, 22)
-layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 2
-expand_mode = 1
-stretch_mode = 5
-
-[node name="BadgeCount" type="Label" parent="Badge/Row"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"ToolLabel"
-auto_translate_mode = 2
-text = "×0"

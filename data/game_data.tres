@@ -72,6 +72,17 @@ BaseValue = 9
 Tags = PackedStringArray("romantic", "elegant")
 UnlockedAtStart = false
 
+[sub_resource type="Resource" id="Resource_dahlia"]
+script = ExtResource("2_flower")
+Kind = 11
+Name = "Dahlia"
+Colours = Array[int]([0, 1, 2, 3, 4])
+GrowDays = 3
+SeedPrice = 7
+BaseValue = 8
+Tags = PackedStringArray("cheerful", "celebration")
+UnlockedAtStart = false
+
 [sub_resource type="Resource" id="Resource_lily"]
 script = ExtResource("2_flower")
 Kind = 6
@@ -158,5 +169,5 @@ StarterSeeds = Dictionary[String, int]({
 "Tulip:Yellow": 2
 })
 BloomStarChance = 0.4
-Flowers = Array[ExtResource("2_flower")]([SubResource("Resource_daisy"), SubResource("Resource_tulip"), SubResource("Resource_carnation"), SubResource("Resource_fern"), SubResource("Resource_sunflower"), SubResource("Resource_rose"), SubResource("Resource_lily"), SubResource("Resource_lavender"), SubResource("Resource_peony"), SubResource("Resource_orchid"), SubResource("Resource_blue_rose")])
+Flowers = Array[ExtResource("2_flower")]([SubResource("Resource_daisy"), SubResource("Resource_tulip"), SubResource("Resource_carnation"), SubResource("Resource_fern"), SubResource("Resource_sunflower"), SubResource("Resource_rose"), SubResource("Resource_dahlia"), SubResource("Resource_lily"), SubResource("Resource_lavender"), SubResource("Resource_peony"), SubResource("Resource_orchid"), SubResource("Resource_blue_rose")])
 Fertilizers = Array[ExtResource("3_fertilizer")]([SubResource("Resource_growth"), SubResource("Resource_bloom")])

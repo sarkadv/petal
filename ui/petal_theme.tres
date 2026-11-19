@@ -429,6 +429,54 @@ corner_radius_top_right = 36
 corner_radius_bottom_right = 36
 corner_radius_bottom_left = 36
 
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_popover"]
+color = Color(0.8784, 0.7882, 0.651, 1)
+thickness = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_scroll"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.9373, 0.8902, 0.8, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_grabber"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.7882, 0.6784, 0.5216, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_grabberhover"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.7216, 0.5922, 0.4157, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_grabberpressed"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.6588, 0.4784, 0.3098, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
 [resource]
 default_font = ExtResource("1_lora")
 default_font_size = 26
@@ -472,6 +520,11 @@ ChoiceButton/styles/hover = SubResource("StyleBoxFlat_choice")
 ChoiceButton/styles/hover_pressed = SubResource("StyleBoxFlat_choicepressed")
 ChoiceButton/styles/normal = SubResource("StyleBoxFlat_choice")
 ChoiceButton/styles/pressed = SubResource("StyleBoxFlat_choicepressed")
+ChoicesMargin/base_type = &"MarginContainer"
+ChoicesMargin/constants/margin_bottom = 14
+ChoicesMargin/constants/margin_left = 14
+ChoicesMargin/constants/margin_right = 14
+ChoicesMargin/constants/margin_top = 14
 DimPanel/base_type = &"Panel"
 DimPanel/styles/panel = SubResource("StyleBoxFlat_dim")
 FieldPanel/base_type = &"PanelContainer"
@@ -496,6 +549,14 @@ PopoverLabel/font_sizes/font_size = 24
 PopoverLabel/styles/normal = SubResource("StyleBoxFlat_choice")
 PopoverPanel/base_type = &"PanelContainer"
 PopoverPanel/styles/panel = SubResource("StyleBoxFlat_popover")
+PopoverSeparator/base_type = &"HSeparator"
+PopoverSeparator/constants/separation = 26
+PopoverSeparator/styles/separator = SubResource("StyleBoxLine_popover")
+ScrollBar/styles/grabber = SubResource("StyleBoxFlat_grabber")
+ScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_grabberhover")
+ScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_grabberpressed")
+ScrollBar/styles/scroll = SubResource("StyleBoxFlat_scroll")
+ScrollBar/styles/scroll_focus = SubResource("StyleBoxFlat_scroll")
 SecondaryButton/base_type = &"Button"
 SecondaryButton/colors/font_color = Color(0.2901961, 0.24705882, 0.20784314, 1)
 SecondaryButton/colors/font_disabled_color = Color(0.2901961, 0.24705882, 0.20784314, 0.6)

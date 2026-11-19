@@ -56,10 +56,15 @@ Each has its name written under it.
   - Until something is chosen, the tool takes the first seed or fertilizer in stock. When the chosen one runs
     out it stays chosen and shows *×0*; switching to another is up to the player (hold the tool).
 - **Hold Seeds or Fertilize** (0.4 s) to choose which one it uses. A small popup opens under the shelf:
-  - Seeds: a coloured dot, the flower's name and the count for each seed in stock (e.g. *Tulip ×2*).
-  - Fertilize: each fertilizer's icon and count.
+  - Seeds: a paper seed packet for each seed in stock, with the flower in its colour on it, the colour's name under
+    it and the count in a corner badge. The packets are in a row per flower, under the flower's name (*Tulip*: red,
+    yellow). A row with more colours than fit scrolls sideways and more rows than fit scroll down, each with a
+    scrollbar; the popup opens with the current choice in view.
+  - Fertilize: a row for each fertilizer in stock with its icon, its name and the count in a badge on the right.
+  - Both have a thin line between rows.
   - The current choice is outlined, unless it has run out: only items in stock are listed. Tap one to pick it;
-    tap anywhere else to close.
+    tap anywhere else to close. Tapping another tool closes it and picks that tool up in the same tap, and holding
+    Seeds or Fertilize opens its choices straight away; other taps outside the popup only close it.
   - With nothing in stock it says *You have no seeds* / *You have no fertilizer*.
 
 ## 4. Pots
@@ -97,7 +102,8 @@ also in an empty pot. It takes effect overnight on the plant in the pot then, wh
   - the flower, with its colour if it comes in several (e.g. *Tulip (red)*), and
   - its state: *Ready in 2 d*, *Ready to harvest*, *Withered* or *Dead*.
 
-  Empty pots show nothing. Letting go after a hold never also uses the tool on the pot.
+  Empty pots show nothing. Letting go after a hold never also uses the tool on the pot. As with the tool popups,
+  tapping a tool closes it and picks the tool up; tapping anywhere else only closes it.
 
 ## 5. Garden supplies
 
@@ -137,11 +143,14 @@ menu, and **Play** continues the same game.
 |---|---|
 | `scenes/greenhouse/greenhouse.tscn`, `Greenhouse.cs` | The screen: stage, top bar, tools, holds, back |
 | `scenes/greenhouse/tool_button.tscn`, `ToolButton.cs` | One tool on the shelf, with its count badge |
+| `scenes/greenhouse/count_badge.tscn`, `CountBadge.cs` | The *×N* badge on the tools, seed packets and fertilizer rows |
 | `scenes/greenhouse/plot.tscn`, `PlotView.cs` | One pot |
-| `scenes/greenhouse/popovers/choice_popover.tscn`, `ChoicePopover.cs` | The popup with a tool's choices |
+| `scenes/greenhouse/popovers/seed_popover.tscn`, `SeedPopover.cs`, `seed_row.tscn`, `seed_packet.tscn`, `SeedPacket.cs` | The popup with the seeds to choose from |
+| `scenes/greenhouse/popovers/fertilizer_popover.tscn`, `FertilizerPopover.cs`, `fertilizer_row.tscn` | The popup with the fertilizers to choose from |
+| `scenes/greenhouse/popovers/ChoicesPopover.cs` | Shared base of the two above: rows with lines between them, the empty text, closing on a pick |
 | `scenes/greenhouse/popovers/info_popover.tscn`, `InfoPopover.cs` | The popup with what is growing in a pot |
-| `scenes/greenhouse/popovers/Popover.cs` | Their shared base: placing the popup on screen |
-| `core/ui/Overlay.cs` | Base of the popups, the garden supplies window and the question: closing on Back and on taps outside |
+| `scenes/greenhouse/popovers/Popover.cs` | Base of all three popups: placing the popup on screen, and closing on taps outside it (a tap on a tool also picks the tool up) |
+| `core/ui/Overlay.cs` | Base of the popups, the garden supplies window and the question: closing on Back, and on taps outside for the window and the question |
 | `scenes/greenhouse/seed_stall/seed_stall.tscn`, `SeedStall.cs`, `stall_row.tscn`, `StallRow.cs` | Garden supplies window |
 | `scenes/greenhouse/art/` | Placeholder SVG art, cut from or drawn to match the reference |
 | `core/game/Plot.cs`, `core/game/GameState.cs` | The rules from GAMEPLAY.md §4 |

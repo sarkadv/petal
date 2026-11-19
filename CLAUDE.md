@@ -58,13 +58,15 @@ GdUnit4 (`gdUnit4.api`, `gdUnit4.test.adapter`) run through `dotnet test`. Add o
 - One suite or test: add `--filter "FullyQualifiedName~GreenhouseTest"` (or `~GreenhouseTest.ExactlyOneToolIsAlwaysSelected`).
 - If `GODOT_BIN` is empty, every test is reported as "not executed" rather than failing. Check it's set first.
 - `.runsettings` runs suites one at a time (`MaxCpuCount` 1) and treats "no tests found" as an error.
-- The adapter generates `gdunit4_testadapter_v5/` and `TestResults/` on each run; both are git-ignored.
+- The adapter generates `gdunit4_testadapter_v5/` and `TestResults/` on each run; both are git-ignored, except
+  `gdunit4_testadapter_v5/.gdignore`. Keep that file: if the editor sees the generated runner script, every C# rebuild
+  fails with ".NET: Failed to unload assemblies".
 
 ### Suites
 
 - `MainMenuTest`, `SettingsTest`, `GreenhouseTest`: one per screen, driven through the UI.
 - `PlotRulesTest`: game rules (GAMEPLAY.md §4) on a `GameState.NewGame()`, with no scene loaded.
-- `Touch.cs`: tap and hold helpers, not a suite.
+- `Touch.cs`: tap, hold and drag helpers, not a suite.
 
 ### Writing a suite
 

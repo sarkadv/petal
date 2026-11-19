@@ -1,28 +1,47 @@
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Godot;
 
 namespace Petal;
 
 /// <summary>
 /// Base for the greenhouse's small popups that appear by something held down (GAMEPLAY.md §4.1, §4.2): a panel kept
-/// on screen that closes when you tap anywhere else. <see cref="ChoicePopover"/> and <see cref="InfoPopover"/> fill it.
+/// on screen that closes when you tap anywhere else. It lets the mouse through and watches taps itself (rather than
+/// <see cref="Overlay"/>'s tap-to-close), so a tap on <see cref="TapThrough"/> also reaches what's under it; any
+/// other tap outside the panel only closes it. <see cref="ChoicesPopover"/> and <see cref="InfoPopover"/> fill it.
 /// </summary>
 public abstract partial class Popover : Overlay
 {
-	protected const float Gap = 6;
+	private const float Gap = 6;
 	private const float ScreenMargin = 16;
+
+	/// <summary>Controls that still get the tap that closes the popover, e.g. the tools, so one tap switches tool.</summary>
+	public Control[] TapThrough { get; set; } = Array.Empty<Control>();
 
 	protected PanelContainer Panel { get; private set; }
 
 	public override void _Ready()
 	{
 		Panel = GetNode<PanelContainer>("%Panel");
+		MouseFilter = MouseFilterEnum.Ignore;
 	}
 
-	/// <summary>Where the panel goes by the anchor, before it's kept on screen.</summary>
-	protected abstract Vector2 PositionBy(Rect2 anchor, Vector2 size);
+	public override void _Input(InputEvent input)
+	{
+		if (!Visible || input is not InputEventMouseButton { Pressed: true, ButtonIndex: MouseButton.Left } press) return;
+		if (Panel.GetGlobalRect().HasPoint(press.Position)) return;
+		Hide();
+		if (!TapThrough.Any(c => c.IsVisibleInTree() && c.GetGlobalRect().HasPoint(press.Position)))
+			GetViewport().SetInputAsHandled();
+	}
+
+	/// <summary>Where the panel goes by the anchor, before it's kept on screen: centred below it by default.</summary>
+	protected virtual Vector2 PositionBy(Rect2 anchor, Vector2 size) =>
+		new(anchor.GetCenter().X - size.X / 2, anchor.End.Y + Gap);
 
 	/// <summary>Shows the panel at <paramref name="width"/>, as tall as its content, by the anchor and on screen.</summary>
-	protected async void ShowBy(Control anchor, float width)
+	protected async Task ShowBy(Control anchor, float width)
 	{
 		Panel.Size = new Vector2(width, 0);
 

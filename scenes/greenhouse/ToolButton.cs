@@ -12,26 +12,18 @@ public partial class ToolButton : Button
 	/// <summary>Translation key.</summary>
 	[Export] private string _label = "";
 
-	private Control _badge;
-	private TextureRect _badgeIcon;
-	private Label _badgeCount;
+	private CountBadge _badge;
 
 	public override void _Ready()
 	{
 		GetNode<TextureRect>("%Art").Texture = _art;
 		GetNode<Label>("%Name").Text = _label;
-		_badge = GetNode<Control>("%Badge");
-		_badgeIcon = GetNode<TextureRect>("%BadgeIcon");
-		_badgeCount = GetNode<Label>("%BadgeCount");
+		_badge = GetNode<CountBadge>("%Badge");
 	}
 
-	/// <summary>Shows "×N" on the badge, with the icon only while there's at least one.</summary>
 	public void ShowBadge(int count, Texture2D icon, Color tint)
 	{
 		_badge.Show();
-		_badgeIcon.Visible = count > 0;
-		_badgeIcon.Texture = icon;
-		_badgeIcon.SelfModulate = tint;
-		_badgeCount.Text = $"×{count}";
+		_badge.SetCount(count, icon, tint);
 	}
 }

@@ -1,0 +1,6 @@
+<!-- Placeholder paper seed packet with an empty window; bloom.svg, tinted, is drawn in the window (GAMEPLAY.md §1.1). -->
+<svg xmlns="http://www.w3.org/2000/svg" width="84" height="100" viewBox="0 0 84 100">
+<path d="M3 10 L8 4 L13 10 L18 4 L23 10 L28 4 L33 10 L38 4 L43 10 L48 4 L53 10 L58 4 L63 10 L68 4 L73 10 L78 4 L81 8 L81 93 Q81 97 77 97 L7 97 Q3 97 3 93 Z" fill="#ead7b5" stroke="#8a6a4a" stroke-width="2.5" stroke-linejoin="round"/>
+<rect x="11" y="16" width="62" height="52" rx="6" fill="#fffaf0" stroke="#c9ad85" stroke-width="1.5"/>
+<line x1="11" y1="80" x2="73" y2="80" stroke="#c9ad85" stroke-width="2" stroke-dasharray="4 4"/>
+</svg>

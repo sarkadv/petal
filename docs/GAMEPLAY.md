@@ -114,6 +114,7 @@ Starter catalogue (examples to balance later):
 | Fern / greenery | green | 1 | 1 | 1 | filler (fits everything) | start |
 | Sunflower | yellow | 3 | 6 | 10 | cheerful, celebration | Seed catalog: Garden |
 | Rose | red, pink, white | 3 | 8 | 9 | romantic, elegant | Seed catalog: Garden |
+| Dahlia | red, pink, white, yellow, orange | 3 | 7 | 8 | cheerful, celebration | Seed catalog: Garden |
 | Lily | white, orange, pink | 3 | 9 | 10 | sympathy, elegant | Seed catalog: Classic |
 | Lavender | purple | 2 | 5 | 4 | calm, wild | Seed catalog: Wildflower |
 | Peony | pink, white | 4 | 14 | 16 | romantic, celebration | Seed catalog: Classic |

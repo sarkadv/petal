@@ -11,7 +11,7 @@
 [ext_resource type="Texture2D" path="res://scenes/greenhouse/art/tool_fertilizer.svg" id="9_fertilizer"]
 [ext_resource type="Texture2D" path="res://scenes/greenhouse/art/tool_clear.svg" id="10_clear"]
 [ext_resource type="PackedScene" path="res://scenes/greenhouse/seed_stall/seed_stall.tscn" id="11_stall"]
-[ext_resource type="PackedScene" path="res://scenes/greenhouse/popovers/choice_popover.tscn" id="12_choice_popover"]
+[ext_resource type="PackedScene" path="res://scenes/greenhouse/popovers/fertilizer_popover.tscn" id="12_fertilizer_popover"]
 [ext_resource type="Texture2D" path="res://ui/icons/coin.svg" id="13_coin"]
 [ext_resource type="Texture2D" path="res://scenes/greenhouse/art/stall.svg" id="14_stall_art"]
 [ext_resource type="Texture2D" path="res://ui/icons/arrow_down.svg" id="15_down"]
@@ -19,6 +19,7 @@
 [ext_resource type="PackedScene" path="res://scenes/greenhouse/popovers/info_popover.tscn" id="17_info_popover"]
 [ext_resource type="PackedScene" path="res://scenes/greenhouse/tool_button.tscn" id="18_tool"]
 [ext_resource type="Script" path="res://core/ui/Overlay.cs" id="19_overlay"]
+[ext_resource type="PackedScene" path="res://scenes/greenhouse/popovers/seed_popover.tscn" id="20_seed_popover"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_tools"]
 resource_local_to_scene = false
@@ -215,13 +216,13 @@ expand_mode = 1
 [node name="Plots" type="GridContainer" parent="Stage"]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 60.0
-offset_top = 350.0
-offset_right = 660.0
-offset_bottom = 1050.0
+offset_left = 78.0
+offset_top = 356.0
+offset_right = 642.0
+offset_bottom = 1044.0
 mouse_filter = 2
-theme_override_constants/h_separation = 240
-theme_override_constants/v_separation = 60
+theme_override_constants/h_separation = 228
+theme_override_constants/v_separation = 72
 columns = 2
 
 [node name="OpenShopButton" type="Button" parent="Stage"]
@@ -242,7 +243,12 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 1
 
-[node name="ChoicePopover" parent="." instance=ExtResource("12_choice_popover")]
+[node name="SeedPopover" parent="." instance=ExtResource("20_seed_popover")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+
+[node name="FertilizerPopover" parent="." instance=ExtResource("12_fertilizer_popover")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1

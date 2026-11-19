@@ -4,8 +4,9 @@ using Godot;
 namespace Petal;
 
 /// <summary>
-/// Something shown over a screen: a window, a question or a popup. It covers the whole screen, so taps on the
-/// screen behind it close it, and Back closes the topmost one.
+/// Something shown over a screen: a window, a question or a popup. Back closes the topmost one. By default it covers
+/// the whole screen, so taps on the screen behind it close it; <see cref="Popover"/> lets taps through and closes
+/// itself instead.
 /// A dim behind its content is a <c>DimPanel</c> child that ignores the mouse.
 /// </summary>
 public partial class Overlay : Control

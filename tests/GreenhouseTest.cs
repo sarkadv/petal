@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using GdUnit4;
 using Godot;
@@ -34,11 +35,15 @@ public class GreenhouseTest
 
 	private T Get<T>(string uniqueName) where T : Node => _screen.GetNode<T>(uniqueName);
 	private Control Pot(int index) => _screen.GetNode("%Plots").GetChild<Control>(index);
-	private Control ChoicePopover => Get<Control>("%ChoicePopover");
-	private Node Choices => _screen.GetNode("%ChoicePopover/%Content");
+	private Control SeedPopover => Get<Control>("%SeedPopover");
+	private Node SeedRows => _screen.GetNode("%SeedPopover/%Rows");
+	private SeedPacket Packet(int row, int index) => SeedRows.GetChild(row).GetNode("%Packets").GetChild<SeedPacket>(index);
+	private Control FertilizerPopover => Get<Control>("%FertilizerPopover");
+	private Node FertilizerRows => _screen.GetNode("%FertilizerPopover/%Rows");
 	private Control InfoPopover => Get<Control>("%InfoPopover");
-	private Label BadgeCount(string tool) => Get<Node>(tool).GetNode<Label>("%BadgeCount");
-	private Control BadgeIcon(string tool) => Get<Node>(tool).GetNode<Control>("%BadgeIcon");
+	private static Label CountOf(Node owner) => owner.GetNode("%Badge").GetNode<Label>("%Count");
+	private Label BadgeCount(string tool) => CountOf(Get<Node>(tool));
+	private Control BadgeIcon(string tool) => Get<Node>(tool).GetNode("%Badge").GetNode<Control>("%Icon");
 
 	[TestCase]
 	public void OpensOnDayOneWithWaterSelected()
@@ -80,31 +85,93 @@ public class GreenhouseTest
 		AssertThat(_game.Plots[0].Stage).IsEqual(PlotStage.Seedling);
 		AssertThat(_game.Plots[0].Seed).IsEqual(Daisy);
 		AssertThat(BadgeCount("%SeedsTool").Text).IsEqual("×5");
-		AssertThat(ChoicePopover.Visible).IsFalse();
+		AssertThat(SeedPopover.Visible).IsFalse();
 	}
 
 	[TestCase]
-	public async Task HoldingSeedsShowsTheChoicesAndPicksOne()
+	public async Task HoldingSeedsShowsAPacketRowPerFlowerAndPicksOne()
 	{
 		await _runner.Hold(Get<Button>("%SeedsTool"));
 
-		AssertThat(ChoicePopover.Visible).IsTrue();
-		AssertThat(Choices.GetChildCount()).IsEqual(4);
-		var daisy = Choices.GetChild<Button>(0);
-		AssertThat(daisy.Text).IsEqual("Daisy ×6");
-		AssertThat(daisy.ButtonPressed).IsTrue();
+		AssertThat(SeedPopover.Visible).IsTrue();
+		AssertThat(SeedRows.GetChildren().Take(3).Select(r => r.GetNode<Label>("%Heading").Text))
+			.ContainsExactly("Daisy", "Tulip", "Fern");
+		var tulips = SeedRows.GetChild(1).GetNode("%Packets").GetChildren().Cast<SeedPacket>();
+		AssertThat(tulips.Select(p => p.GetNode<Label>("%Colour").Text)).ContainsExactly("red", "yellow");
+		AssertThat(CountOf(Packet(0, 0)).Text).IsEqual("×6");
+		AssertThat(Packet(0, 0).ButtonPressed).IsTrue();
 
-		await _runner.Tap(Choices.GetChild<Button>(1));
+		await _runner.Tap(Packet(1, 0));
 
-		AssertThat(ChoicePopover.Visible).IsFalse();
+		AssertThat(SeedPopover.Visible).IsFalse();
 		AssertThat(BadgeCount("%SeedsTool").Text).IsEqual("×2");
+	}
+
+	[TestCase]
+	public async Task OnlyRowsThatDoNotFitGetAScrollbar()
+	{
+		foreach (var colour in GameData.Instance.Flower(FlowerKind.Dahlia).Colours)
+			_game.BuySeed(new Seed(FlowerKind.Dahlia, colour));
+		await _runner.Hold(Get<Button>("%SeedsTool"));
+
+		foreach (var row in SeedRows.GetChildren())
+		{
+			bool dahlia = row.GetNode<Label>("%Heading").Text == "Dahlia";
+			AssertThat(row.GetNode<ScrollContainer>("%Scroll").GetHScrollBar().Visible).IsEqual(dahlia);
+		}
+		AssertThat(_screen.GetNode<ScrollContainer>("%SeedPopover/%Scroll").GetVScrollBar().Visible).IsTrue();
+	}
+
+	[TestCase]
+	public async Task TheChosenSeedIsScrolledIntoView()
+	{
+		foreach (var kind in new[] { FlowerKind.Rose, FlowerKind.Lavender, FlowerKind.Peony })
+			_game.BuySeed(new Seed(kind, GameData.Instance.Flower(kind).Colours[0]));
+		await _runner.Hold(Get<Button>("%SeedsTool"));
+		var scroll = _screen.GetNode<ScrollContainer>("%SeedPopover/%Scroll");
+		scroll.ScrollVertical = 10000;
+		await _runner.AwaitIdleFrame();
+		await _runner.Tap(Packet(SeedRows.GetChildCount() - 1, 0));
+
+		await _runner.Hold(Get<Button>("%SeedsTool"));
+
+		var chosen = Packet(SeedRows.GetChildCount() - 1, 0);
+		AssertThat(chosen.ButtonPressed).IsTrue();
+		AssertThat(scroll.GetGlobalRect().Encloses(chosen.GetGlobalRect())).IsTrue();
+	}
+
+	[TestCase]
+	public async Task DraggingThePacketsDoesNotPickOne()
+	{
+		foreach (var colour in GameData.Instance.Flower(FlowerKind.Dahlia).Colours)
+			_game.BuySeed(new Seed(FlowerKind.Dahlia, colour));
+		await _runner.Hold(Get<Button>("%SeedsTool"));
+		var list = _screen.GetNode<ScrollContainer>("%SeedPopover/%Scroll");
+		var dahlias = SeedRows.GetChildren().First(r => r.GetNode<Label>("%Heading").Text == "Dahlia");
+		var row = dahlias.GetNode<ScrollContainer>("%Scroll");
+		var packet = row.GetNode("%Packets").GetChild<SeedPacket>(1);
+
+		// Both drags stay within how far the packets can scroll, so they move with the finger and it lets go on the
+		// packet it pressed, as on a phone.
+		await _runner.Drag(Packet(1, 0), new Vector2(0, -200));
+
+		AssertThat(list.ScrollVertical).IsGreater(0);
+		AssertThat(list.GetGlobalRect().HasPoint(packet.GetGlobalRect().GetCenter())).IsTrue();
+		AssertThat(Packet(1, 0).ButtonPressed).IsFalse();
+
+		await _runner.Drag(packet, new Vector2(-80, 0));
+
+		AssertThat(row.ScrollHorizontal).IsGreater(0);
+		AssertThat(packet.ButtonPressed).IsFalse();
+		AssertThat(SeedPopover.Visible).IsTrue();
+		AssertThat(Packet(0, 0).ButtonPressed).IsTrue();
 	}
 
 	[TestCase]
 	public async Task RunningOutKeepsTheChosenSeedAtZero()
 	{
 		await _runner.Hold(Get<Button>("%SeedsTool"));
-		await _runner.Tap(Choices.GetChild<Button>(1));
+		await _runner.Tap(Packet(1, 0));
 		await _runner.Tap(Pot(0));
 		await _runner.Tap(Pot(1));
 		AssertThat(BadgeCount("%SeedsTool").Text).IsEqual("×0");
@@ -121,8 +188,30 @@ public class GreenhouseTest
 	{
 		await _runner.Hold(Get<Button>("%FertilizerTool"));
 
-		AssertThat(ChoicePopover.Visible).IsTrue();
-		AssertThat(Choices.GetChild<Label>(0).Text).IsEqual("You have no fertilizer");
+		AssertThat(FertilizerPopover.Visible).IsTrue();
+		AssertThat(FertilizerRows.GetChildCount()).IsEqual(0);
+		AssertThat(_screen.GetNode<Label>("%FertilizerPopover/%Empty").Visible).IsTrue();
+	}
+
+	[TestCase]
+	public async Task HoldingFertilizeShowsARowPerFertilizerAndPicksOne()
+	{
+		_game.BuyFertilizer(FertilizerKind.Growth);
+		_game.BuyFertilizer(FertilizerKind.Bloom);
+		_game.BuyFertilizer(FertilizerKind.Bloom);
+
+		await _runner.Hold(Get<Button>("%FertilizerTool"));
+
+		var rows = FertilizerRows.GetChildren();
+		AssertThat(rows.Select(r => r.GetNode<Button>("%Button").Text)).ContainsExactly("Growth fertilizer", "Bloom fertilizer");
+		AssertThat(rows.Select(r => CountOf(r).Text)).ContainsExactly("×1", "×2");
+		AssertThat(rows.Select(r => r.GetNode<Control>("%Line").Visible)).ContainsExactly(false, true);
+		AssertThat(rows[0].GetNode<Button>("%Button").ButtonPressed).IsTrue();
+
+		await _runner.Tap(rows[1].GetNode<Button>("%Button"));
+
+		AssertThat(FertilizerPopover.Visible).IsFalse();
+		AssertThat(BadgeCount("%FertilizerTool").Text).IsEqual("×2");
 	}
 
 	[TestCase]
@@ -165,7 +254,50 @@ public class GreenhouseTest
 		await _runner.Hold(Get<Button>("%FertilizerTool"));
 		await _runner.Tap(Get<Control>("%DayLabel"));
 
-		AssertThat(ChoicePopover.Visible).IsFalse();
+		AssertThat(FertilizerPopover.Visible).IsFalse();
+	}
+
+	[TestCase]
+	public async Task TappingAnotherToolWhileChoosingSeedsPicksItUp()
+	{
+		await _runner.Hold(Get<Button>("%SeedsTool"));
+		await _runner.Tap(Get<Button>("%WaterTool"));
+
+		AssertThat(SeedPopover.Visible).IsFalse();
+		AssertThat(Get<Button>("%WaterTool").ButtonPressed).IsTrue();
+	}
+
+	[TestCase]
+	public async Task HoldingFertilizeWhileChoosingSeedsOpensItsChoices()
+	{
+		await _runner.Hold(Get<Button>("%SeedsTool"));
+		await _runner.Hold(Get<Button>("%FertilizerTool"));
+
+		AssertThat(SeedPopover.Visible).IsFalse();
+		AssertThat(FertilizerPopover.Visible).IsTrue();
+		AssertThat(Get<Button>("%FertilizerTool").ButtonPressed).IsTrue();
+	}
+
+	[TestCase]
+	public async Task HoldingSeedsWhileChoosingFertilizerOpensItsChoices()
+	{
+		await _runner.Hold(Get<Button>("%FertilizerTool"));
+		await _runner.Hold(Get<Button>("%SeedsTool"));
+
+		AssertThat(FertilizerPopover.Visible).IsFalse();
+		AssertThat(SeedPopover.Visible).IsTrue();
+		AssertThat(Get<Button>("%SeedsTool").ButtonPressed).IsTrue();
+	}
+
+	[TestCase]
+	public async Task TappingAPotWhileChoosingFertilizerOnlyClosesThePopover()
+	{
+		_game.BuyFertilizer(FertilizerKind.Growth);
+		await _runner.Hold(Get<Button>("%FertilizerTool"));
+		await _runner.Tap(Pot(2));
+
+		AssertThat(FertilizerPopover.Visible).IsFalse();
+		AssertThat(_game.Plots[2].Fertilizer).IsNull();
 	}
 
 	[TestCase]

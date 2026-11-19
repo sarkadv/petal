@@ -39,7 +39,8 @@ public partial class Greenhouse : Control
 	private Label _moneyLabel;
 	private Label _stemCount;
 	private Control _seedPacket;
-	private ChoicePopover _choicePopover;
+	private SeedPopover _seedPopover;
+	private FertilizerPopover _fertilizerPopover;
 	private InfoPopover _infoPopover;
 	private Control _confirmClear;
 
@@ -51,7 +52,8 @@ public partial class Greenhouse : Control
 		_moneyLabel = GetNode<Label>("%MoneyLabel");
 		_stemCount = GetNode<Label>("%StemCount");
 		_seedPacket = GetNode<Control>("%SeedPacket");
-		_choicePopover = GetNode<ChoicePopover>("%ChoicePopover");
+		_seedPopover = GetNode<SeedPopover>("%SeedPopover");
+		_fertilizerPopover = GetNode<FertilizerPopover>("%FertilizerPopover");
 		_infoPopover = GetNode<InfoPopover>("%InfoPopover");
 		_confirmClear = GetNode<Control>("%ConfirmClear");
 
@@ -73,6 +75,10 @@ public partial class Greenhouse : Control
 		AddTool(Tool.Fertilizer, "%FertilizerTool", holdable: true);
 		AddTool(Tool.Harvest, "%HarvestTool");
 		AddTool(Tool.Clear, "%ClearTool");
+		Control[] tools = _toolButtons.Values.ToArray<Control>();
+		_seedPopover.TapThrough = tools;
+		_fertilizerPopover.TapThrough = tools;
+		_infoPopover.TapThrough = tools;
 
 		GetNode<Button>("%BackButton").Pressed += GoBack;
 		GetNode<Button>("%StallButton").Pressed += GetNode<Control>("%SeedStall").Show;
@@ -124,9 +130,21 @@ public partial class Greenhouse : Control
 	{
 		SelectTool(tool);
 		if (tool == Tool.Seeds)
-			_choicePopover.ShowChoices(button, SeedChoices(), "You have no seeds");
+			_seedPopover.ShowSeeds(button, _game.Seeds, _seed, PickSeed);
 		else
-			_choicePopover.ShowChoices(button, FertilizerChoices(), "You have no fertilizer");
+			_fertilizerPopover.ShowFertilizers(button, _game.Fertilizers, _fertilizer, PickFertilizer);
+	}
+
+	private void PickSeed(Seed seed)
+	{
+		_seed = seed;
+		UpdateToolBadges();
+	}
+
+	private void PickFertilizer(FertilizerData fertilizer)
+	{
+		_fertilizer = fertilizer;
+		UpdateToolBadges();
 	}
 
 	private void ShowPlotInfo(PlotView view)
@@ -181,20 +199,6 @@ public partial class Greenhouse : Control
 		if (_game.Clear(_toClear.Plot))
 			_toClear.Pop();
 	}
-
-	private List<ChoicePopover.Choice> SeedChoices() =>
-		_game.Seeds
-			.Select(s => new ChoicePopover.Choice(
-				_dotIcon, s.Seed.Colour.Tint(), $"{Tr(s.Seed.Flower.Name)} ×{s.Count}", s.Seed == _seed,
-				() => { _seed = s.Seed; UpdateToolBadges(); }))
-			.ToList();
-
-	private List<ChoicePopover.Choice> FertilizerChoices() =>
-		_game.Fertilizers
-			.Select(f => new ChoicePopover.Choice(
-				f.Fertilizer.Icon, Colors.White, $"×{f.Count}", f.Fertilizer == _fertilizer,
-				() => { _fertilizer = f.Fertilizer; UpdateToolBadges(); }))
-			.ToList();
 
 	private void OnOpenShopPressed()
 	{

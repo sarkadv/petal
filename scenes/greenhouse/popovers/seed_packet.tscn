@@ -1,0 +1,60 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/greenhouse/popovers/SeedPacket.cs" id="1_script"]
+[ext_resource type="Texture2D" path="res://scenes/greenhouse/art/seed_packet.svg" id="2_packet"]
+[ext_resource type="Texture2D" path="res://scenes/greenhouse/art/bloom.svg" id="3_bloom"]
+[ext_resource type="PackedScene" path="res://scenes/greenhouse/count_badge.tscn" id="4_badge"]
+
+[node name="SeedPacket" type="Button"]
+custom_minimum_size = Vector2(120, 156)
+mouse_filter = 1
+focus_mode = 0
+theme_type_variation = &"ChoiceButton"
+toggle_mode = true
+script = ExtResource("1_script")
+
+[node name="Packet" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 10.0
+offset_right = 102.0
+offset_bottom = 110.0
+mouse_filter = 2
+texture = ExtResource("2_packet")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Flower" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 38.0
+offset_top = 29.0
+offset_right = 82.0
+offset_bottom = 73.0
+mouse_filter = 2
+texture = ExtResource("3_bloom")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Colour" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 0.0
+offset_top = 114.0
+offset_right = 120.0
+offset_bottom = 148.0
+mouse_filter = 2
+auto_translate_mode = 2
+theme_type_variation = &"ToolLabel"
+horizontal_alignment = 1
+vertical_alignment = 1
+text_overrun_behavior = 3
+
+[node name="Badge" parent="." instance=ExtResource("4_badge")]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 62.0
+offset_top = 2.0
+offset_right = 118.0
+offset_bottom = 34.0
+grow_horizontal = 0
