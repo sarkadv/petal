@@ -1,58 +1,17 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://scenes/greenhouse/seed_stall/SeedStall.cs" id="1_script"]
-[ext_resource type="PackedScene" path="res://scenes/greenhouse/seed_stall/stall_row.tscn" id="2_row"]
-[ext_resource type="Texture2D" path="res://ui/icons/coin.svg" id="3_coin"]
+[ext_resource type="PackedScene" path="res://scenes/greenhouse/overlay_window.tscn" id="1_window"]
+[ext_resource type="Script" path="res://scenes/greenhouse/seed_stall/SeedStall.cs" id="2_script"]
+[ext_resource type="PackedScene" path="res://scenes/greenhouse/seed_stall/stall_row.tscn" id="3_row"]
+[ext_resource type="Texture2D" path="res://ui/icons/coin.svg" id="4_coin"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_tabs"]
 
-[node name="SeedStall" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("1_script")
-_rowScene = ExtResource("2_row")
+[node name="SeedStall" instance=ExtResource("1_window")]
+script = ExtResource("2_script")
+_rowScene = ExtResource("3_row")
 
-[node name="Dim" type="Panel" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_type_variation = &"DimPanel"
-
-[node name="Margin" type="MarginContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/margin_left = 24
-theme_override_constants/margin_top = 60
-theme_override_constants/margin_right = 24
-theme_override_constants/margin_bottom = 48
-
-[node name="Card" type="PanelContainer" parent="Margin"]
-layout_mode = 2
-
-[node name="VBox" type="VBoxContainer" parent="Margin/Card"]
-layout_mode = 2
-theme_override_constants/separation = 20
-
-[node name="Header" type="HBoxContainer" parent="Margin/Card/VBox"]
-layout_mode = 2
-
-[node name="Title" type="Label" parent="Margin/Card/VBox/Header"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"HeaderLabel"
+[node name="Title" parent="Margin/Card/VBox/Header" index="0"]
 text = "Garden supplies"
 
 [node name="Wallet" type="HBoxContainer" parent="Margin/Card/VBox/Header"]
@@ -63,7 +22,7 @@ theme_override_constants/separation = 8
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 size_flags_vertical = 4
-texture = ExtResource("3_coin")
+texture = ExtResource("4_coin")
 expand_mode = 1
 stretch_mode = 5
 
@@ -75,7 +34,7 @@ auto_translate_mode = 2
 text = "100"
 vertical_alignment = 1
 
-[node name="Tabs" type="HBoxContainer" parent="Margin/Card/VBox"]
+[node name="Tabs" type="HBoxContainer" parent="Margin/Card/VBox" index="1"]
 layout_mode = 2
 theme_override_constants/separation = 12
 
@@ -100,7 +59,7 @@ toggle_mode = true
 button_group = SubResource("ButtonGroup_tabs")
 text = "Fertilizers"
 
-[node name="Scroll" type="ScrollContainer" parent="Margin/Card/VBox"]
+[node name="Scroll" type="ScrollContainer" parent="Margin/Card/VBox" index="2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -120,10 +79,3 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 16
-
-[node name="CloseButton" type="Button" parent="Margin/Card/VBox"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 88)
-layout_mode = 2
-theme_type_variation = &"SecondaryButton"
-text = "Close"

@@ -1,0 +1,64 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/greenhouse/inventory/InventoryItem.cs" id="1_script"]
+[ext_resource type="Texture2D" path="res://scenes/greenhouse/art/bloom.svg" id="2_bloom"]
+[ext_resource type="Texture2D" path="res://ui/icons/star.svg" id="3_star"]
+[ext_resource type="PackedScene" path="res://scenes/greenhouse/count_badge.tscn" id="4_badge"]
+
+[node name="InventoryItem" type="Control"]
+custom_minimum_size = Vector2(120, 156)
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("1_script")
+
+[node name="Flower" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 22.0
+offset_top = 12.0
+offset_right = 98.0
+offset_bottom = 88.0
+mouse_filter = 2
+texture = ExtResource("2_bloom")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="StarRow" type="CenterContainer" parent="."]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 90.0
+offset_right = 120.0
+offset_bottom = 112.0
+mouse_filter = 2
+
+[node name="Stars" type="TextureRect" parent="StarRow"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("3_star")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="Colour" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 0.0
+offset_top = 114.0
+offset_right = 120.0
+offset_bottom = 148.0
+mouse_filter = 2
+auto_translate_mode = 2
+theme_type_variation = &"ToolLabel"
+horizontal_alignment = 1
+vertical_alignment = 1
+text_overrun_behavior = 3
+
+[node name="Badge" parent="." instance=ExtResource("4_badge")]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 62.0
+offset_top = 2.0
+offset_right = 118.0
+offset_bottom = 34.0
+grow_horizontal = 0

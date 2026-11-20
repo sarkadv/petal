@@ -1,0 +1,40 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/greenhouse/overlay_window.tscn" id="1_window"]
+[ext_resource type="Script" path="res://scenes/greenhouse/inventory/Inventory.cs" id="2_script"]
+[ext_resource type="PackedScene" path="res://scenes/greenhouse/inventory/inventory_item.tscn" id="3_item"]
+[ext_resource type="Script" path="res://core/ui/RowList.cs" id="4_rows"]
+[ext_resource type="PackedScene" path="res://scenes/greenhouse/item_row.tscn" id="5_row"]
+
+[node name="Inventory" instance=ExtResource("1_window")]
+script = ExtResource("2_script")
+_itemScene = ExtResource("3_item")
+
+[node name="Title" parent="Margin/Card/VBox/Header" index="0"]
+text = "Inventory"
+
+[node name="Scroll" type="ScrollContainer" parent="Margin/Card/VBox" index="1"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+horizontal_scroll_mode = 0
+
+[node name="Rows" type="VBoxContainer" parent="Margin/Card/VBox/Scroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = 0
+script = ExtResource("4_rows")
+_rowScene = ExtResource("5_row")
+
+[node name="Empty" type="Label" parent="Margin/Card/VBox" index="2"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+text = "You have no harvested flowers yet"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3

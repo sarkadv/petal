@@ -20,6 +20,8 @@
 [ext_resource type="PackedScene" path="res://scenes/greenhouse/tool_button.tscn" id="18_tool"]
 [ext_resource type="Script" path="res://core/ui/Overlay.cs" id="19_overlay"]
 [ext_resource type="PackedScene" path="res://scenes/greenhouse/popovers/seed_popover.tscn" id="20_seed_popover"]
+[ext_resource type="PackedScene" path="res://scenes/greenhouse/count_badge.tscn" id="21_badge"]
+[ext_resource type="PackedScene" path="res://scenes/greenhouse/inventory/inventory.tscn" id="22_inventory"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_tools"]
 resource_local_to_scene = false
@@ -94,9 +96,37 @@ text = "Day 1"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="InventoryButton" type="Button" parent="Stage"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 452.0
+offset_top = 18.0
+offset_right = 524.0
+offset_bottom = 90.0
+theme_type_variation = &"WoodButton"
+
+[node name="Art" type="TextureRect" parent="Stage/InventoryButton"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 12.0
+offset_right = 66.0
+offset_bottom = 60.0
+mouse_filter = 2
+texture = ExtResource("6_harvest")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="InventoryBadge" parent="Stage/InventoryButton" instance=ExtResource("21_badge")]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 36.0
+offset_top = 50.0
+offset_right = 84.0
+offset_bottom = 82.0
+
 [node name="Wallet" type="PanelContainer" parent="Stage"]
 layout_mode = 0
-offset_left = 462.0
+offset_left = 546.0
 offset_top = 22.0
 offset_right = 696.0
 offset_bottom = 86.0
@@ -106,24 +136,6 @@ theme_type_variation = &"PillPanel"
 layout_mode = 2
 theme_override_constants/separation = 6
 alignment = 1
-
-[node name="StemIcon" type="TextureRect" parent="Stage/Wallet/Row"]
-custom_minimum_size = Vector2(44, 32)
-layout_mode = 2
-size_flags_vertical = 4
-texture = ExtResource("6_harvest")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="StemCount" type="Label" parent="Stage/Wallet/Row"]
-unique_name_in_owner = true
-layout_mode = 2
-auto_translate_mode = 2
-text = "0"
-
-[node name="Gap" type="Control" parent="Stage/Wallet/Row"]
-custom_minimum_size = Vector2(8, 0)
-layout_mode = 2
 
 [node name="Coins" type="TextureRect" parent="Stage/Wallet/Row"]
 custom_minimum_size = Vector2(32, 32)
@@ -239,6 +251,11 @@ icon = ExtResource("15_down")
 icon_alignment = 2
 
 [node name="SeedStall" parent="." instance=ExtResource("11_stall")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+
+[node name="Inventory" parent="." instance=ExtResource("22_inventory")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1

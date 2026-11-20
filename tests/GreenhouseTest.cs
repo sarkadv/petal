@@ -37,10 +37,14 @@ public class GreenhouseTest
 	private Control Pot(int index) => _screen.GetNode("%Plots").GetChild<Control>(index);
 	private Control SeedPopover => Get<Control>("%SeedPopover");
 	private Node SeedRows => _screen.GetNode("%SeedPopover/%Rows");
-	private SeedPacket Packet(int row, int index) => SeedRows.GetChild(row).GetNode("%Packets").GetChild<SeedPacket>(index);
+	private SeedPacket Packet(int row, int index) => SeedRows.GetChild(row).GetNode("%Items").GetChild<SeedPacket>(index);
 	private Control FertilizerPopover => Get<Control>("%FertilizerPopover");
 	private Node FertilizerRows => _screen.GetNode("%FertilizerPopover/%Rows");
 	private Control InfoPopover => Get<Control>("%InfoPopover");
+	private Control Inventory => Get<Control>("%Inventory");
+	private Node InventoryRows => _screen.GetNode("%Inventory/%Rows");
+	private Label InventoryCount => Get<Node>("%InventoryBadge").GetNode<Label>("%Count");
+	private Task OpenInventory() => _runner.Tap(Get<Button>("%InventoryButton"));
 	private static Label CountOf(Node owner) => owner.GetNode("%Badge").GetNode<Label>("%Count");
 	private Label BadgeCount(string tool) => CountOf(Get<Node>(tool));
 	private Control BadgeIcon(string tool) => Get<Node>(tool).GetNode("%Badge").GetNode<Control>("%Icon");
@@ -50,6 +54,7 @@ public class GreenhouseTest
 	{
 		AssertThat(Get<Label>("%DayLabel").Text).IsEqual("Day 1");
 		AssertThat(Get<Label>("%MoneyLabel").Text).IsEqual("100");
+		AssertThat(InventoryCount.Text).IsEqual("×0");
 		AssertThat(Get<Button>("%WaterTool").ButtonPressed).IsTrue();
 		AssertThat(Get<Button>("%SeedsTool").ButtonPressed).IsFalse();
 		AssertThat(BadgeCount("%SeedsTool").Text).IsEqual("×6");
@@ -96,7 +101,7 @@ public class GreenhouseTest
 		AssertThat(SeedPopover.Visible).IsTrue();
 		AssertThat(SeedRows.GetChildren().Take(3).Select(r => r.GetNode<Label>("%Heading").Text))
 			.ContainsExactly("Daisy", "Tulip", "Fern");
-		var tulips = SeedRows.GetChild(1).GetNode("%Packets").GetChildren().Cast<SeedPacket>();
+		var tulips = SeedRows.GetChild(1).GetNode("%Items").GetChildren().Cast<SeedPacket>();
 		AssertThat(tulips.Select(p => p.GetNode<Label>("%Colour").Text)).ContainsExactly("red", "yellow");
 		AssertThat(CountOf(Packet(0, 0)).Text).IsEqual("×6");
 		AssertThat(Packet(0, 0).ButtonPressed).IsTrue();
@@ -149,7 +154,7 @@ public class GreenhouseTest
 		var list = _screen.GetNode<ScrollContainer>("%SeedPopover/%Scroll");
 		var dahlias = SeedRows.GetChildren().First(r => r.GetNode<Label>("%Heading").Text == "Dahlia");
 		var row = dahlias.GetNode<ScrollContainer>("%Scroll");
-		var packet = row.GetNode("%Packets").GetChild<SeedPacket>(1);
+		var packet = row.GetNode("%Items").GetChild<SeedPacket>(1);
 
 		// Both drags stay within how far the packets can scroll, so they move with the finger and it lets go on the
 		// packet it pressed, as on a phone.
@@ -427,5 +432,69 @@ public class GreenhouseTest
 
 		AssertThat(_game.Day).IsEqual(2);
 		AssertThat(Get<Label>("%DayLabel").Text).IsEqual("Day 2");
+	}
+
+	[TestCase]
+	public async Task TappingTheInventoryButtonShowsItByFlowerColourAndQuality()
+	{
+		HarvestDaisiesAndATulip();
+		AssertThat(InventoryCount.Text).IsEqual($"×{_game.InventoryCount}");
+
+		await OpenInventory();
+
+		AssertThat(Inventory.Visible).IsTrue();
+		var rows = InventoryRows.GetChildren();
+		AssertThat(rows.Select(r => r.GetNode<Label>("%Heading").Text)).ContainsExactly("Daisy", "Tulip");
+		AssertThat(rows.Select(r => r.GetNode<Control>("%Line").Visible)).ContainsExactly(false, true);
+		var items = rows.SelectMany(r => r.GetNode("%Items").GetChildren().Cast<InventoryItem>()).ToList();
+		AssertThat(items.Select(i => i.Stem)).ContainsExactly(_game.Inventory.Select(s => s.Stem).ToArray());
+		AssertThat(items.Select(i => i.Stem.Quality)).ContainsExactly(1, 2, 2);
+		AssertThat(items.Select(i => CountOf(i).Text)).ContainsExactly(_game.Inventory.Select(s => $"×{s.Count}").ToArray());
+		AssertThat(items[2].GetNode<Label>("%Colour").Text).IsEqual("red");
+	}
+
+	[TestCase]
+	public async Task TheInventorySaysSoWhenNothingIsHarvested()
+	{
+		await OpenInventory();
+
+		AssertThat(Inventory.Visible).IsTrue();
+		AssertThat(InventoryRows.GetChildCount()).IsEqual(0);
+		AssertThat(_screen.GetNode<Label>("%Inventory/%Empty").Visible).IsTrue();
+	}
+
+	[TestCase]
+	public async Task CloseTappingOutsideAndBackCloseTheInventory()
+	{
+		await OpenInventory();
+		await _runner.Tap(_screen.GetNode<Button>("%Inventory/%CloseButton"));
+		AssertThat(Inventory.Visible).IsFalse();
+
+		await OpenInventory();
+		await _runner.TapAt(new Vector2(360, 20));
+		AssertThat(Inventory.Visible).IsFalse();
+
+		await OpenInventory();
+		_screen.Notification((int)Node.NotificationWMGoBackRequest);
+		AssertThat(Inventory.Visible).IsFalse();
+	}
+
+	/// <summary>
+	/// Harvests ★ daisies (ripe since yesterday), ★★ daisies and ★★ red tulips (both ripe today), on day 3.
+	/// </summary>
+	private void HarvestDaisiesAndATulip()
+	{
+		var plots = _game.Plots;
+		_game.Plant(plots[0], Daisy);
+		_game.Plant(plots[1], RedTulip);
+		_game.Water(plots[0]);
+		_game.Water(plots[1]);
+		_game.EndDay();
+		_game.Plant(plots[2], Daisy);
+		_game.Water(plots[1]);
+		_game.Water(plots[2]);
+		_game.EndDay();
+		foreach (var plot in plots.Take(3))
+			_game.Harvest(plot);
 	}
 }

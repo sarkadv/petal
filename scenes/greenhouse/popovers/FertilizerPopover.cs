@@ -16,10 +16,10 @@ public partial class FertilizerPopover : ChoicesPopover
 		Control anchor, IEnumerable<(FertilizerData Fertilizer, int Count)> fertilizers, FertilizerData chosen,
 		Action<FertilizerData> picked)
 	{
-		ClearRows();
+		Rows.Clear();
 		foreach (var (fertilizer, count) in fertilizers)
 		{
-			var row = AddRow();
+			var row = Rows.AddRow();
 			var button = row.GetNode<Button>("%Button");
 			button.Text = fertilizer.Name;
 			button.Icon = fertilizer.Icon;

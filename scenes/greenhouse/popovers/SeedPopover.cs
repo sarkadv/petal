@@ -30,15 +30,15 @@ public partial class SeedPopover : ChoicesPopover
 
 	public async void ShowSeeds(Control anchor, IEnumerable<(Seed Seed, int Count)> seeds, Seed? chosen, Action<Seed> picked)
 	{
-		ClearRows();
+		Rows.Clear();
 		float rowWidth = RowWidth();
 		(SeedPacket Packet, ScrollContainer Row)? chosenPacket = null;
 		foreach (var flower in seeds.GroupBy(s => s.Seed.Kind))
 		{
-			var row = AddRow();
+			var row = Rows.AddRow();
 			row.GetNode<Label>("%Heading").Text = flower.First().Seed.Flower.Name;
 			var rowScroll = row.GetNode<ScrollContainer>("%Scroll");
-			var packets = row.GetNode<Container>("%Packets");
+			var packets = row.GetNode<Container>("%Items");
 			foreach (var (seed, count) in flower)
 			{
 				var packet = _packetScene.Instantiate<SeedPacket>();
@@ -56,7 +56,7 @@ public partial class SeedPopover : ChoicesPopover
 				: ScrollContainer.ScrollMode.Disabled;
 		}
 
-		_scroll.Visible = Rows.GetChildCount() > 0;
+		_scroll.Visible = !Rows.IsEmpty;
 		_scroll.CustomMinimumSize = new Vector2(0, Mathf.Min(Rows.GetCombinedMinimumSize().Y, MaxRowsHeight));
 		_scroll.ScrollVertical = 0;
 		await ShowRows(anchor, Width);

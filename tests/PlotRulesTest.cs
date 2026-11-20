@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using GdUnit4;
 using static GdUnit4.Assertions;
 
@@ -106,9 +107,31 @@ public class PlotRulesTest
 
 		RipenDaisy(Plots[0]);
 		_game.Harvest(Plots[0]);
-		AssertThat(_game.StemCount).IsBetween(3, 6);
+		AssertThat(_game.InventoryCount).IsBetween(3, 6);
 		_game.EndDay();
-		AssertThat(_game.StemCount).IsEqual(0);
+		AssertThat(_game.InventoryCount).IsEqual(0);
+	}
+
+	[TestCase]
+	public void TheInventoryIsListedByFlowerThenColourThenLowestQuality()
+	{
+		var yellowTulip = new Seed(FlowerKind.Tulip, FlowerColour.Yellow);
+		_game.Plant(Plots[0], yellowTulip);
+		_game.Water(Plots[0]);
+		_game.EndDay();
+		_game.Plant(Plots[1], RedTulip);
+		_game.Water(Plots[0]);
+		_game.Water(Plots[1]);
+		_game.EndDay();
+		RipenDaisy(Plots[2]);
+		// The yellow tulip ripened yesterday (★); the red tulip and the daisy ripen today (★★).
+		foreach (var plot in Plots)
+			_game.Harvest(plot);
+
+		AssertThat(_game.Inventory.Select(s => s.Stem)).ContainsExactly(
+			new Stem(FlowerKind.Daisy, FlowerColour.White, 2),
+			new Stem(FlowerKind.Tulip, FlowerColour.Red, 2),
+			new Stem(FlowerKind.Tulip, FlowerColour.Yellow, 1));
 	}
 
 	[TestCase]

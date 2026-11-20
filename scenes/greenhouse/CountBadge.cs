@@ -3,8 +3,8 @@ using Godot;
 namespace Petal;
 
 /// <summary>
-/// The small "×N" chip on the Seeds and Fertilize tools, the seed packets and the fertilizer rows (GREENHOUSE.md §3),
-/// optionally with an icon before the count.
+/// The small "×N" chip on the Seeds and Fertilize tools, the inventory button, seed packets, inventory items and
+/// fertilizer rows (GREENHOUSE.md §2, §3), optionally with an icon before the count.
 /// </summary>
 public partial class CountBadge : PanelContainer
 {

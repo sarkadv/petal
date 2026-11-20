@@ -5,8 +5,8 @@ using System.Linq;
 namespace Petal;
 
 /// <summary>
-/// The game being played: day, money, greenhouse plots, seed and fertilizer stock, and today's harvested
-/// stems (GAMEPLAY.md §4, §9). Plain C# so it can be saved later (§2). Actions return false when they
+/// The game being played: day, money, greenhouse plots, seed and fertilizer stock, and today's inventory of
+/// harvested stems (GAMEPLAY.md §4, §9). Plain C# so it can be saved later (§2). Actions return false when they
 /// aren't possible; screens listen to <see cref="Changed"/> to redraw.
 /// </summary>
 public class GameState
@@ -24,12 +24,12 @@ public class GameState
 	public int Day { get; private set; } = 1;
 	public int Money { get; private set; }
 	public IReadOnlyList<Plot> Plots => _plots;
-	public int StemCount => _stems.Values.Sum();
+	public int InventoryCount => _inventory.Values.Sum();
 
 	private readonly List<Plot> _plots = new();
 	private readonly Dictionary<Seed, int> _seeds = new();
 	private readonly Dictionary<FertilizerKind, int> _fertilizers = new();
-	private readonly Dictionary<Stem, int> _stems = new();
+	private readonly Dictionary<Stem, int> _inventory = new();
 	private readonly HashSet<FlowerKind> _unlockedFlowers = new();
 
 	public static GameState NewGame()
@@ -60,6 +60,13 @@ public class GameState
 		GameData.Instance.Fertilizers
 			.Select(f => (f, FertilizerCount(f.Kind)))
 			.Where(f => f.Item2 > 0);
+
+	/// <summary>Today's inventory (§4.5) in catalogue order, then colour order, then from the lowest quality.</summary>
+	public IEnumerable<(Stem Stem, int Count)> Inventory =>
+		_inventory.OrderBy(s => GameData.Instance.Flowers.IndexOf(s.Key.Flower))
+			.ThenBy(s => s.Key.Colour)
+			.ThenBy(s => s.Key.Quality)
+			.Select(s => (s.Key, s.Value));
 
 	public int SeedCount(Seed seed) => _seeds.GetValueOrDefault(seed);
 	public int FertilizerCount(FertilizerKind fertilizer) => _fertilizers.GetValueOrDefault(fertilizer);
@@ -99,7 +106,7 @@ public class GameState
 	{
 		if (!plot.CanHarvest) return false;
 		var (stem, count) = plot.Harvest();
-		Add(_stems, stem, count);
+		Add(_inventory, stem, count);
 		return NotifyChanged();
 	}
 
@@ -110,10 +117,10 @@ public class GameState
 		return NotifyChanged();
 	}
 
-	/// <summary>Today's stems wilt (§4.5), the plots go through the night (§4.1) and the next morning starts.</summary>
+	/// <summary>Today's inventory wilts (§4.5), the plots go through the night (§4.1) and the next morning starts.</summary>
 	public void EndDay()
 	{
-		_stems.Clear();
+		_inventory.Clear();
 		foreach (var plot in _plots)
 			plot.AdvanceNight();
 		Day++;

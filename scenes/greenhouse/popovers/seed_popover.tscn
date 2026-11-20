@@ -1,8 +1,9 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scenes/greenhouse/popovers/SeedPopover.cs" id="1_script"]
-[ext_resource type="PackedScene" path="res://scenes/greenhouse/popovers/seed_row.tscn" id="2_row"]
+[ext_resource type="PackedScene" path="res://scenes/greenhouse/item_row.tscn" id="2_row"]
 [ext_resource type="PackedScene" path="res://scenes/greenhouse/popovers/seed_packet.tscn" id="3_packet"]
+[ext_resource type="Script" path="res://core/ui/RowList.cs" id="9_rows"]
 
 [node name="SeedPopover" type="Control"]
 layout_mode = 3
@@ -12,7 +13,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_script")
-_rowScene = ExtResource("2_row")
 _packetScene = ExtResource("3_packet")
 
 [node name="Panel" type="PanelContainer" parent="."]
@@ -41,6 +41,8 @@ layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 theme_override_constants/separation = 0
+script = ExtResource("9_rows")
+_rowScene = ExtResource("2_row")
 
 [node name="Empty" type="Label" parent="Panel/Margin"]
 unique_name_in_owner = true

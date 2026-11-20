@@ -27,7 +27,7 @@ extra space around it is grass. From top to bottom:
 
 | Where | What |
 |---|---|
-| Top, on the grass | Back button, day chalkboard, stems-and-money pill (§2) |
+| Top, on the grass | Back button, day chalkboard, inventory button, money pill (§2) |
 | Along the top wall | The tool shelf (§3) |
 | Top of the path | The garden supplies cabinet (§5) |
 | Either side of the path | The pots, 2 columns × 3 rows (§4) |
@@ -37,8 +37,23 @@ extra space around it is grass. From top to bottom:
 
 - **Back** (round wooden button, top left): see §8.
 - **Day** on a small chalkboard, in handwriting: *Day 3* / *Den 3*.
-- **Stems and money** in a cream pill (top right): a flower basket with today's harvested stem count, and a gold coin
-  with the money.
+- **Inventory** (round wooden button with a wicker basket of flowers, left of the money): a *×N* badge shows how
+  many flowers are in today's inventory. Tapping it opens the inventory (below).
+- **Money** in a cream pill (top right): a gold coin and the amount.
+
+### Inventory
+
+Today's inventory of harvested flowers (GAMEPLAY.md §4.5) in a window over the greenhouse, titled *Inventory* /
+*Inventář*. It looks like the seed choices (§3), but bigger and only for looking:
+
+- A row per flower under the flower's name, in catalogue order, with a thin line between rows.
+- An item per colour and quality: the flower in its colour, a gold star per quality level, the colour's name and
+  the count in a corner badge. Within a flower, colours go in colour order (red, pink, white, yellow, orange,
+  purple, blue, green, as in GAMEPLAY.md §4.4) and each colour from the lowest quality up (*Tulip*: red ★, red ★★,
+  yellow ★).
+- A row with more items than fit scrolls sideways; more rows than fit scroll down.
+- When it's empty it says *You have no harvested flowers yet* / *Zatím nemáte žádné sklizené květiny*.
+- Items can't be tapped. **Close**, tapping outside the window or Back closes it.
 
 ## 3. Tool shelf
 
@@ -120,7 +135,7 @@ window (*Kůlna*) over the greenhouse:
 ## 6. Open Shop
 
 A green sign over the door in the bottom of the bay. Tapping it ends the morning and opens the shop
-(GAMEPLAY.md §5). Until the shop exists it ends the day: today's stems wilt, the night passes and the next
+(GAMEPLAY.md §5). Until the shop exists it ends the day: today's inventory wilts, the night passes and the next
 morning starts.
 
 ## 7. Text and fonts
@@ -131,7 +146,7 @@ morning starts.
 ## 8. Back
 
 Android's back button (or the back button in the top bar) closes the topmost thing that's open, in this order:
-the *Remove this plant?* question, a popup, the garden supplies window. Each of these is an `Overlay`; the order
+the *Remove this plant?* question, a popup, the inventory, the garden supplies window. Each of these is an `Overlay`; the order
 is the order they're drawn in. With nothing open it returns to the main
 menu, and **Play** continues the same game.
 
@@ -143,14 +158,18 @@ menu, and **Play** continues the same game.
 |---|---|
 | `scenes/greenhouse/greenhouse.tscn`, `Greenhouse.cs` | The screen: stage, top bar, tools, holds, back |
 | `scenes/greenhouse/tool_button.tscn`, `ToolButton.cs` | One tool on the shelf, with its count badge |
-| `scenes/greenhouse/count_badge.tscn`, `CountBadge.cs` | The *×N* badge on the tools, seed packets and fertilizer rows |
+| `scenes/greenhouse/count_badge.tscn`, `CountBadge.cs` | The *×N* badge on the tools, inventory button, seed packets, inventory items and fertilizer rows |
 | `scenes/greenhouse/plot.tscn`, `PlotView.cs` | One pot |
-| `scenes/greenhouse/popovers/seed_popover.tscn`, `SeedPopover.cs`, `seed_row.tscn`, `seed_packet.tscn`, `SeedPacket.cs` | The popup with the seeds to choose from |
+| `scenes/greenhouse/popovers/seed_popover.tscn`, `SeedPopover.cs`, `seed_packet.tscn`, `SeedPacket.cs` | The popup with the seeds to choose from |
+| `scenes/greenhouse/item_row.tscn` | A row of items under a flower's name that scrolls sideways, used by the seed popup and the inventory |
+| `core/ui/RowList.cs` | The list of rows with a thin line between them in the two choices popups and the inventory |
+| `scenes/greenhouse/overlay_window.tscn` | Shared frame of the inventory and the garden supplies window: dim, card, title and **Close** |
+| `scenes/greenhouse/inventory/inventory.tscn`, `Inventory.cs`, `inventory_item.tscn`, `InventoryItem.cs` | The inventory window |
 | `scenes/greenhouse/popovers/fertilizer_popover.tscn`, `FertilizerPopover.cs`, `fertilizer_row.tscn` | The popup with the fertilizers to choose from |
-| `scenes/greenhouse/popovers/ChoicesPopover.cs` | Shared base of the two above: rows with lines between them, the empty text, closing on a pick |
+| `scenes/greenhouse/popovers/ChoicesPopover.cs` | Shared base of the two above: the rows, the empty text, closing on a pick |
 | `scenes/greenhouse/popovers/info_popover.tscn`, `InfoPopover.cs` | The popup with what is growing in a pot |
 | `scenes/greenhouse/popovers/Popover.cs` | Base of all three popups: placing the popup on screen, and closing on taps outside it (a tap on a tool also picks the tool up) |
-| `core/ui/Overlay.cs` | Base of the popups, the garden supplies window and the question: closing on Back, and on taps outside for the window and the question |
+| `core/ui/Overlay.cs` | Base of the popups, the inventory, the garden supplies window and the question: closing on Back, and on taps outside for the window and the question |
 | `scenes/greenhouse/seed_stall/seed_stall.tscn`, `SeedStall.cs`, `stall_row.tscn`, `StallRow.cs` | Garden supplies window |
 | `scenes/greenhouse/art/` | Placeholder SVG art, cut from or drawn to match the reference |
 | `core/game/Plot.cs`, `core/game/GameState.cs` | The rules from GAMEPLAY.md §4 |

@@ -7,8 +7,9 @@ namespace Petal;
 /// <summary>
 /// The morning greenhouse (GAMEPLAY.md §4), seen from above as in docs/reference/greenhouse_concept.svg:
 /// pots worked with the tools on the shelf (plant, water, fertilize, harvest, clear: §4.2), the seed stall
-/// (§4.3), and the Open Shop door to move on to the day's customers. Tapping a tool selects it; holding Seeds or
-/// Fertilize opens a small popover to choose which one it uses, and holding a pot shows what's growing in it.
+/// (§4.3), the inventory button (§4.5), and the Open Shop door to move on to the day's customers.
+/// Tapping a tool selects it; holding Seeds or Fertilize opens a small popover to choose which one it uses, and
+/// holding a pot shows what's growing in it.
 /// The layout is a fixed 720×1280 stage, centred, with grass filling any extra screen.
 /// </summary>
 public partial class Greenhouse : Control
@@ -37,11 +38,12 @@ public partial class Greenhouse : Control
 	private readonly List<PlotView> _plotViews = new();
 	private Label _dayLabel;
 	private Label _moneyLabel;
-	private Label _stemCount;
+	private CountBadge _inventoryBadge;
 	private Control _seedPacket;
 	private SeedPopover _seedPopover;
 	private FertilizerPopover _fertilizerPopover;
 	private InfoPopover _infoPopover;
+	private Inventory _inventory;
 	private Control _confirmClear;
 
 	public override void _Ready()
@@ -50,11 +52,12 @@ public partial class Greenhouse : Control
 
 		_dayLabel = GetNode<Label>("%DayLabel");
 		_moneyLabel = GetNode<Label>("%MoneyLabel");
-		_stemCount = GetNode<Label>("%StemCount");
+		_inventoryBadge = GetNode<CountBadge>("%InventoryBadge");
 		_seedPacket = GetNode<Control>("%SeedPacket");
 		_seedPopover = GetNode<SeedPopover>("%SeedPopover");
 		_fertilizerPopover = GetNode<FertilizerPopover>("%FertilizerPopover");
 		_infoPopover = GetNode<InfoPopover>("%InfoPopover");
+		_inventory = GetNode<Inventory>("%Inventory");
 		_confirmClear = GetNode<Control>("%ConfirmClear");
 
 		var plots = GetNode<Container>("%Plots");
@@ -81,6 +84,7 @@ public partial class Greenhouse : Control
 		_infoPopover.TapThrough = tools;
 
 		GetNode<Button>("%BackButton").Pressed += GoBack;
+		GetNode<Button>("%InventoryButton").Pressed += () => _inventory.Open(_game.Inventory);
 		GetNode<Button>("%StallButton").Pressed += GetNode<Control>("%SeedStall").Show;
 		GetNode<Button>("%OpenShopButton").Pressed += OnOpenShopPressed;
 		GetNode<Button>("%KeepButton").Pressed += _confirmClear.Hide;
@@ -216,7 +220,7 @@ public partial class Greenhouse : Control
 	{
 		_dayLabel.Text = string.Format(Tr("Day {0}"), _game.Day);
 		_moneyLabel.Text = _game.Money.ToString();
-		_stemCount.Text = _game.StemCount.ToString();
+		_inventoryBadge.SetCount(_game.InventoryCount);
 		EnsureChoices();
 		UpdateToolBadges();
 		foreach (var view in _plotViews)
