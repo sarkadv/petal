@@ -102,12 +102,14 @@ public class GameState
 		return NotifyChanged();
 	}
 
-	public bool Harvest(Plot plot)
+	/// <summary>Returns how many stems went into the inventory, 0 if the plot can't be harvested.</summary>
+	public int Harvest(Plot plot)
 	{
-		if (!plot.CanHarvest) return false;
+		if (!plot.CanHarvest) return 0;
 		var (stem, count) = plot.Harvest();
 		Add(_inventory, stem, count);
-		return NotifyChanged();
+		NotifyChanged();
+		return count;
 	}
 
 	public bool Clear(Plot plot)

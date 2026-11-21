@@ -22,6 +22,11 @@
 [ext_resource type="PackedScene" path="res://scenes/greenhouse/popovers/seed_popover.tscn" id="20_seed_popover"]
 [ext_resource type="PackedScene" path="res://scenes/greenhouse/count_badge.tscn" id="21_badge"]
 [ext_resource type="PackedScene" path="res://scenes/greenhouse/inventory/inventory.tscn" id="22_inventory"]
+[ext_resource type="Script" path="res://scenes/greenhouse/PotEffects.cs" id="23_effects"]
+[ext_resource type="Texture2D" path="res://scenes/greenhouse/art/drop.svg" id="24_drop"]
+[ext_resource type="Texture2D" path="res://scenes/greenhouse/art/speck.svg" id="25_speck"]
+[ext_resource type="PackedScene" path="res://scenes/greenhouse/packet_picture.tscn" id="26_packet"]
+[ext_resource type="Texture2D" path="res://scenes/greenhouse/art/bloom.svg" id="27_bloom"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_tools"]
 resource_local_to_scene = false
@@ -249,6 +254,26 @@ theme_type_variation = &"ShopSignButton"
 text = "Open Shop"
 icon = ExtResource("15_down")
 icon_alignment = 2
+
+[node name="PotEffects" type="Control" parent="Stage"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("23_effects")
+_drop = ExtResource("24_drop")
+_speck = ExtResource("25_speck")
+_packet = ExtResource("26_packet")
+_bloom = ExtResource("27_bloom")
+_can = ExtResource("8_water")
+_sack = ExtResource("9_fertilizer")
+_trowel = ExtResource("10_clear")
+_seedColour = Color(0.9098039, 0.827451, 0.627451, 1)
+_soilColour = Color(0.47843137, 0.34509805, 0.2509804, 1)
 
 [node name="SeedStall" parent="." instance=ExtResource("11_stall")]
 unique_name_in_owner = true

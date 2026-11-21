@@ -38,7 +38,8 @@ extra space around it is grass. From top to bottom:
 - **Back** (round wooden button, top left): see §8.
 - **Day** on a small chalkboard, in handwriting: *Day 3* / *Den 3*.
 - **Inventory** (round wooden button with a wicker basket of flowers, left of the money): a *×N* badge shows how
-  many flowers are in today's inventory. Tapping it opens the inventory (below).
+  many flowers are in today's inventory. Harvested flowers count on it as they land in the basket (§4). Tapping it
+  opens the inventory (below).
 - **Money** in a cream pill (top right): a gold coin and the amount.
 
 ### Inventory
@@ -108,10 +109,22 @@ also in an empty pot. It takes effect overnight on the plant in the pot then, wh
 
 ### Using a pot
 
-- **Tap** a pot to use the selected tool on it. It gives a small bounce when the action worked; nothing happens
-  if it can't be done (e.g. planting into a pot that isn't empty).
+- **Tap** a pot to use the selected tool on it. When the action works, the tool shows it (below) and the pot gives a
+  small bounce as the tool reaches the soil; nothing happens if it can't be done (e.g. planting into a pot that isn't
+  empty).
 - **Clearing a living plant** asks first (*Remove this plant?* with *Keep* / *Remove*); tapping outside the question
   or Back counts as *Keep*. Dead and withered plants are cleared straight away.
+- **Animations** are only for show: the action has already happened, they never block a tap, and tapping several
+  pots quickly plays them side by side. Each lasts well under a second:
+
+  | Tool | Animation |
+  |---|---|
+  | Seeds | A seed packet with the flower in its colour appears by the pot, tips and shakes seeds in; the sprouts grow up out of the soil |
+  | Water | The watering can tips over the pot and pours drops; the wet soil fades in |
+  | Fertilize | The sack tips over the pot and pours granules in the fertilizer's colour; the soil tint fades in |
+  | Harvest | One flower per stem picked (3–6) lifts out of the pot and flies to the inventory basket, which bounces and counts up as each lands; the leaves shrink away |
+  | Clear | The trowel digs in and flicks out soil; the plants shrink away |
+
 - **Hold** a pot (0.4 s) to see what's growing in it. A small popup opens diagonally off the pot's corner that
   faces the middle of the screen, overlapping that corner a little, with two lines:
   - the flower, with its colour if it comes in several (e.g. *Tulip (red)*), and
@@ -159,8 +172,11 @@ menu, and **Play** continues the same game.
 | `scenes/greenhouse/greenhouse.tscn`, `Greenhouse.cs` | The screen: stage, top bar, tools, holds, back |
 | `scenes/greenhouse/tool_button.tscn`, `ToolButton.cs` | One tool on the shelf, with its count badge |
 | `scenes/greenhouse/count_badge.tscn`, `CountBadge.cs` | The *×N* badge on the tools, inventory button, seed packets, inventory items and fertilizer rows |
-| `scenes/greenhouse/plot.tscn`, `PlotView.cs` | One pot |
+| `scenes/greenhouse/plot.tscn`, `PlotView.cs` | One pot, and how its soil and sprouts change when a tool reaches it |
+| `scenes/greenhouse/PotEffects.cs` (node `PotEffects` on the stage) | The tool animations over the pots and the harvested flowers flying to the basket |
+| `core/ui/ControlExtensions.cs` | The bounce of the pots and the basket |
 | `scenes/greenhouse/popovers/seed_popover.tscn`, `SeedPopover.cs`, `seed_packet.tscn`, `SeedPacket.cs` | The popup with the seeds to choose from |
+| `scenes/greenhouse/packet_picture.tscn` | A seed packet with the flower in its colour, in the seed popup and the planting animation |
 | `scenes/greenhouse/item_row.tscn` | A row of items under a flower's name that scrolls sideways, used by the seed popup and the inventory |
 | `core/ui/RowList.cs` | The list of rows with a thin line between them in the two choices popups and the inventory |
 | `scenes/greenhouse/overlay_window.tscn` | Shared frame of the inventory and the garden supplies window: dim, card, title and **Close** |

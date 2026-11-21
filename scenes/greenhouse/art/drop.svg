@@ -1,0 +1,5 @@
+<!-- Placeholder water drop poured from the watering can (GAMEPLAY.md §1.1). -->
+<svg xmlns="http://www.w3.org/2000/svg" width="14" height="20" viewBox="0 0 14 20">
+<path d="M7 1 C9 6 13 10 13 13.5 A6 6 0 0 1 1 13.5 C1 10 5 6 7 1 Z" fill="#8fc6e8" stroke="#5a97bf" stroke-width="1.2"/>
+<ellipse cx="5" cy="13" rx="1.6" ry="2.4" fill="#ffffff" opacity="0.8"/>
+</svg>

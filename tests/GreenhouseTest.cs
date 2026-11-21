@@ -426,6 +426,52 @@ public class GreenhouseTest
 	}
 
 	[TestCase]
+	public async Task ToolAnimationsTidyUpAfterThemselves()
+	{
+		_game.BuyFertilizer(FertilizerKind.Growth);
+		await _runner.Tap(Pot(0));
+		await _runner.Tap(Get<Button>("%SeedsTool"));
+		await _runner.Tap(Pot(0));
+		await _runner.Tap(Get<Button>("%FertilizerTool"));
+		await _runner.Tap(Pot(0));
+		await _runner.Tap(Get<Button>("%ClearTool"));
+		await _runner.Tap(Pot(0));
+		await _runner.Tap(Get<Button>("%RemoveButton"));
+		AssertThat(Get<Node>("%PotEffects").GetChildCount()).IsGreater(0);
+
+		await _runner.AwaitMillis(1500);
+
+		AssertThat(Get<Node>("%PotEffects").GetChildCount()).IsEqual(0);
+	}
+
+	[TestCase]
+	public async Task HarvestedFlowersCountOnTheBasketAsTheyLandInIt()
+	{
+		RipenDaisies();
+		await _runner.Tap(Get<Button>("%HarvestTool"));
+
+		await _runner.Tap(Pot(0));
+
+		AssertThat(_game.InventoryCount).IsBetween(3, 6);
+		AssertThat(InventoryCount.Text).IsEqual("×0");
+		await _runner.AwaitMillis(1500);
+		AssertThat(InventoryCount.Text).IsEqual($"×{_game.InventoryCount}");
+	}
+
+	[TestCase]
+	public async Task EndingTheDayWhileFlowersFlyLeavesTheBasketEmpty()
+	{
+		RipenDaisies();
+		await _runner.Tap(Get<Button>("%HarvestTool"));
+		await _runner.Tap(Pot(0));
+
+		await _runner.Tap(Get<Button>("%OpenShopButton"));
+		await _runner.AwaitMillis(1500);
+
+		AssertThat(InventoryCount.Text).IsEqual("×0");
+	}
+
+	[TestCase]
 	public async Task OpenShopStartsTheNextDay()
 	{
 		await _runner.Tap(Get<Button>("%OpenShopButton"));
@@ -477,6 +523,16 @@ public class GreenhouseTest
 		await OpenInventory();
 		_screen.Notification((int)Node.NotificationWMGoBackRequest);
 		AssertThat(Inventory.Visible).IsFalse();
+	}
+
+	/// <summary>Daisies in the first pot, ready to harvest on day 2.</summary>
+	private void RipenDaisies()
+	{
+		var plot = _game.Plots[0];
+		_game.Plant(plot, Daisy);
+		_game.Water(plot);
+		_game.EndDay();
+		AssertThat(plot.CanHarvest).IsTrue();
 	}
 
 	/// <summary>

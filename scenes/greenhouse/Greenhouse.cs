@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
@@ -9,7 +10,7 @@ namespace Petal;
 /// pots worked with the tools on the shelf (plant, water, fertilize, harvest, clear: §4.2), the seed stall
 /// (§4.3), the inventory button (§4.5), and the Open Shop door to move on to the day's customers.
 /// Tapping a tool selects it; holding Seeds or Fertilize opens a small popover to choose which one it uses, and
-/// holding a pot shows what's growing in it.
+/// holding a pot shows what's growing in it. Using a tool on a pot plays its animation (PotEffects).
 /// The layout is a fixed 720×1280 stage, centred, with grass filling any extra screen.
 /// </summary>
 public partial class Greenhouse : Control
@@ -33,11 +34,14 @@ public partial class Greenhouse : Control
 	private int _holdId;
 	/// <summary>Set when a pot was held, so releasing it doesn't also use the tool.</summary>
 	private bool _plotWasHeld;
+	/// <summary>Harvested stems still flying to the basket, not yet counted on its badge.</summary>
+	private int _stemsInFlight;
 
 	private readonly Dictionary<Tool, ToolButton> _toolButtons = new();
 	private readonly List<PlotView> _plotViews = new();
 	private Label _dayLabel;
 	private Label _moneyLabel;
+	private Button _inventoryButton;
 	private CountBadge _inventoryBadge;
 	private Control _seedPacket;
 	private SeedPopover _seedPopover;
@@ -45,6 +49,7 @@ public partial class Greenhouse : Control
 	private InfoPopover _infoPopover;
 	private Inventory _inventory;
 	private Control _confirmClear;
+	private PotEffects _effects;
 
 	public override void _Ready()
 	{
@@ -52,6 +57,7 @@ public partial class Greenhouse : Control
 
 		_dayLabel = GetNode<Label>("%DayLabel");
 		_moneyLabel = GetNode<Label>("%MoneyLabel");
+		_inventoryButton = GetNode<Button>("%InventoryButton");
 		_inventoryBadge = GetNode<CountBadge>("%InventoryBadge");
 		_seedPacket = GetNode<Control>("%SeedPacket");
 		_seedPopover = GetNode<SeedPopover>("%SeedPopover");
@@ -59,6 +65,7 @@ public partial class Greenhouse : Control
 		_infoPopover = GetNode<InfoPopover>("%InfoPopover");
 		_inventory = GetNode<Inventory>("%Inventory");
 		_confirmClear = GetNode<Control>("%ConfirmClear");
+		_effects = GetNode<PotEffects>("%PotEffects");
 
 		var plots = GetNode<Container>("%Plots");
 		foreach (var plot in _game.Plots)
@@ -84,7 +91,7 @@ public partial class Greenhouse : Control
 		_infoPopover.TapThrough = tools;
 
 		GetNode<Button>("%BackButton").Pressed += GoBack;
-		GetNode<Button>("%InventoryButton").Pressed += () => _inventory.Open(_game.Inventory);
+		_inventoryButton.Pressed += () => _inventory.Open(_game.Inventory);
 		GetNode<Button>("%StallButton").Pressed += GetNode<Control>("%SeedStall").Show;
 		GetNode<Button>("%OpenShopButton").Pressed += OnOpenShopPressed;
 		GetNode<Button>("%KeepButton").Pressed += _confirmClear.Hide;
@@ -176,32 +183,69 @@ public partial class Greenhouse : Control
 	{
 		if (_plotWasHeld) return;
 		var plot = view.Plot;
-		bool done = _tool switch
+		switch (_tool)
 		{
-			Tool.Seeds => _seed is { } seed && _game.Plant(plot, seed),
-			Tool.Water => _game.Water(plot),
-			Tool.Fertilizer => _fertilizer != null && _game.Fertilize(plot, _fertilizer.Kind),
-			Tool.Harvest => _game.Harvest(plot),
-			Tool.Clear => Clear(view),
-			_ => false,
-		};
-		if (done)
-			view.Pop();
+			case Tool.Seeds:
+				if (_seed is { } seed && _game.Plant(plot, seed))
+					_effects.Plant(view, seed.Colour.Tint());
+				break;
+			case Tool.Water:
+				if (_game.Water(plot))
+					_effects.Water(view);
+				break;
+			case Tool.Fertilizer:
+				if (_fertilizer != null && _game.Fertilize(plot, _fertilizer.Kind))
+					_effects.Fertilize(view, _fertilizer.SoilTint);
+				break;
+			case Tool.Harvest:
+				Harvest(view);
+				break;
+			case Tool.Clear:
+				Clear(view);
+				break;
+		}
 	}
 
-	private bool Clear(PlotView view)
+	private void Harvest(PlotView view)
 	{
-		if (!view.Plot.IsAlive) return _game.Clear(view.Plot);
-		_toClear = view;
-		_confirmClear.Show();
-		return false;
+		if (!view.Plot.CanHarvest) return;
+		var flower = view.Plot.Seed!.Value.Colour.Tint();
+		var leaves = view.CopyPlants(blooms: false);
+		int stems = _game.Harvest(view.Plot);
+		_stemsInFlight += stems;
+		UpdateInventoryBadge();
+		_effects.Harvest(view, leaves, flower, stems, _inventoryButton, OnStemLanded);
+	}
+
+	private void OnStemLanded()
+	{
+		_stemsInFlight--;
+		UpdateInventoryBadge();
+	}
+
+	private void Clear(PlotView view)
+	{
+		if (view.Plot.IsAlive)
+		{
+			_toClear = view;
+			_confirmClear.Show();
+		}
+		else
+			Remove(view);
 	}
 
 	private void OnRemovePressed()
 	{
 		_confirmClear.Hide();
-		if (_game.Clear(_toClear.Plot))
-			_toClear.Pop();
+		Remove(_toClear);
+	}
+
+	private void Remove(PlotView view)
+	{
+		if (!view.Plot.CanClear) return;
+		var plants = view.CopyPlants();
+		_game.Clear(view.Plot);
+		_effects.Clear(view, plants);
 	}
 
 	private void OnOpenShopPressed()
@@ -220,12 +264,16 @@ public partial class Greenhouse : Control
 	{
 		_dayLabel.Text = string.Format(Tr("Day {0}"), _game.Day);
 		_moneyLabel.Text = _game.Money.ToString();
-		_inventoryBadge.SetCount(_game.InventoryCount);
+		UpdateInventoryBadge();
 		EnsureChoices();
 		UpdateToolBadges();
 		foreach (var view in _plotViews)
 			view.Refresh();
 	}
+
+	/// <summary>Stems count on the badge once they've landed in the basket; ending the day mid-flight empties it.</summary>
+	private void UpdateInventoryBadge() =>
+		_inventoryBadge.SetCount(Math.Max(0, _game.InventoryCount - _stemsInFlight));
 
 	/// <summary>
 	/// Until something is chosen, the tool takes the first one in stock. A choice that runs out stays chosen at ×0;

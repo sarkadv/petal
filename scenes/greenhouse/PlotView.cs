@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 
 namespace Petal;
@@ -6,7 +7,8 @@ namespace Petal;
 /// <summary>
 /// One greenhouse plot on screen, a terracotta pot seen from above (GAMEPLAY.md §4.1): the plants at their
 /// stage, dark wet soil once watered (dry soil means it still needs water), and soil tinted by its fertilizer.
-/// Holding it shows what's growing (see Greenhouse).
+/// Holding it shows what's growing (see Greenhouse). After a tool is used on it, the change shows when the tool
+/// reaches the soil (see PotEffects).
 /// </summary>
 public partial class PlotView : Button
 {
@@ -17,15 +19,19 @@ public partial class PlotView : Button
 	[Export] private Texture2D _dead;
 
 	private readonly List<(TextureRect Plant, TextureRect Bloom)> _plants = new();
+	private Control _plantsNode;
 	private TextureRect _wetSoil;
 	private TextureRect _fertilizedSoil;
-	private Tween _pop;
 
 	public Plot Plot { get; set; }
 
+	/// <summary>Where the flower heads are drawn, also while hidden.</summary>
+	public IEnumerable<Control> Blooms => _plants.Select(p => (Control)p.Bloom);
+
 	public override void _Ready()
 	{
-		foreach (var plant in GetNode("%Plants").GetChildren())
+		_plantsNode = GetNode<Control>("%Plants");
+		foreach (var plant in _plantsNode.GetChildren())
 			_plants.Add(((TextureRect)plant, plant.GetNode<TextureRect>("Bloom")));
 		_wetSoil = GetNode<TextureRect>("%WetSoil");
 		_fertilizedSoil = GetNode<TextureRect>("%FertilizedSoil");
@@ -58,13 +64,37 @@ public partial class PlotView : Button
 			_fertilizedSoil.SelfModulate = GameData.Instance.Fertilizer(fertilizer).SoilTint;
 	}
 
-	/// <summary>A small bounce to show an action worked.</summary>
-	public void Pop()
+	public void ShowWatered(float delay) => FadeIn(_wetSoil, delay);
+
+	public void ShowFertilized(float delay) => FadeIn(_fertilizedSoil, delay);
+
+	/// <summary>The new sprouts grow up out of the soil one after another.</summary>
+	public void ShowPlanted(float delay)
 	{
-		PivotOffset = Size / 2;
-		_pop?.Kill();
-		_pop = CreateTween();
-		_pop.TweenProperty(this, "scale", new Vector2(1.05f, 1.05f), 0.08f);
-		_pop.TweenProperty(this, "scale", Vector2.One, 0.12f);
+		for (int i = 0; i < _plants.Count; i++)
+		{
+			var plant = _plants[i].Plant;
+			plant.PivotOffset = plant.Size / 2;
+			plant.Scale = Vector2.Zero;
+			CreateTween().TweenProperty(plant, "scale", Vector2.One, 0.3f)
+				.SetDelay(delay + i * 0.06f).SetTrans(Tween.TransitionType.Back).SetEase(Tween.EaseType.Out);
+		}
+	}
+
+	/// <summary>A copy of the plants as they are now, to animate after they've gone from the pot.</summary>
+	public Control CopyPlants(bool blooms = true)
+	{
+		var copy = (Control)_plantsNode.Duplicate();
+		copy.UniqueNameInOwner = false;
+		if (!blooms)
+			foreach (var plant in copy.GetChildren())
+				plant.GetNode<CanvasItem>("Bloom").Hide();
+		return copy;
+	}
+
+	private void FadeIn(CanvasItem soil, float delay)
+	{
+		soil.Modulate = Colors.Transparent;
+		CreateTween().TweenProperty(soil, "modulate:a", 1f, 0.25f).SetDelay(delay);
 	}
 }

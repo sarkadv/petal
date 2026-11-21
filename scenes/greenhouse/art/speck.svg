@@ -1,0 +1,4 @@
+<!-- Placeholder seed, fertilizer granule or clod of soil (GAMEPLAY.md §1.1). White so it can be tinted. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12">
+<ellipse cx="6" cy="6" rx="5" ry="4" transform="rotate(-25 6 6)" fill="#ffffff" stroke="#b8b0a4" stroke-width="1"/>
+</svg>

@@ -14,7 +14,7 @@ public partial class SeedPacket : Button
 	public void SetSeed(Seed seed, int count)
 	{
 		Seed = seed;
-		GetNode<TextureRect>("%Flower").SelfModulate = seed.Colour.Tint();
+		GetNode<TextureRect>("Packet/%Flower").SelfModulate = seed.Colour.Tint();
 		GetNode<Label>("%Colour").Text = seed.Colour.DisplayName();
 		GetNode<CountBadge>("%Badge").SetCount(count);
 	}

@@ -59,7 +59,7 @@ public class PlotRulesTest
 
 		_game.EndDay();
 		AssertThat(Plots[0].Stage).IsEqual(PlotStage.Withered);
-		AssertThat(_game.Harvest(Plots[0])).IsFalse();
+		AssertThat(_game.Harvest(Plots[0])).IsEqual(0);
 	}
 
 	[TestCase]
