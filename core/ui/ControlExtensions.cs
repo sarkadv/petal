@@ -15,8 +15,8 @@ public static class ControlExtensions
 		control.PivotOffset = control.Size / 2;
 		var tween = control.CreateTween();
 		tween.TweenInterval(delay);
-		tween.TweenProperty(control, "scale", new Vector2(size, size), 0.08f);
-		tween.TweenProperty(control, "scale", Vector2.One, 0.12f);
+		tween.TweenProperty(control, TweenPaths.Scale, new Vector2(size, size), 0.08f);
+		tween.TweenProperty(control, TweenPaths.Scale, Vector2.One, 0.12f);
 		control.SetMeta(BounceTween, tween);
 	}
 }

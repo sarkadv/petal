@@ -3,30 +3,23 @@ using Godot;
 namespace Petal;
 
 /// <summary>
-/// Title screen (GAMEPLAY.md §2) with Play and Settings. The Settings screen lives in
+/// Title screen (GAMEPLAY.md §2) with Play and Settings. The <see cref="SettingsScreen"/> lives in
 /// this scene; tapping Settings swaps it in with a short fade, Back swaps home back in.
-/// Settings has one option, Language, changed with the arrows either side of its name.
 /// </summary>
 public partial class MainMenu : Control
 {
 	private Control _home;
-	private Control _settings;
-	private Label _languageName;
+	private SettingsScreen _settings;
 	private Tween _fade;
 
 	public override void _Ready()
 	{
 		_home = GetNode<Control>("%Home");
-		_settings = GetNode<Control>("%Settings");
+		_settings = GetNode<SettingsScreen>("%Settings");
 
 		GetNode<Button>("%PlayButton").Pressed += OnPlayPressed;
 		GetNode<Button>("%SettingsButton").Pressed += OnSettingsPressed;
-		_settings.GetNode<Button>("%BackButton").Pressed += OnBackPressed;
-
-		_languageName = _settings.GetNode<Label>("%LanguageName");
-		_languageName.Text = Language.CurrentName;
-		_settings.GetNode<Button>("%PreviousLanguage").Pressed += OnPreviousLanguagePressed;
-		_settings.GetNode<Button>("%NextLanguage").Pressed += OnNextLanguagePressed;
+		_settings.BackRequested += OnBackPressed;
 	}
 
 	public override void _Notification(int what)
@@ -54,22 +47,6 @@ public partial class MainMenu : Control
 		ShowScreen(_home);
 	}
 
-	private void OnPreviousLanguagePressed()
-	{
-		ChangeLanguage(-1);
-	}
-
-	private void OnNextLanguagePressed()
-	{
-		ChangeLanguage(+1);
-	}
-
-	private void ChangeLanguage(int direction)
-	{
-		Language.Step(direction);
-		_languageName.Text = Language.CurrentName;
-	}
-
 	private void ShowScreen(Control screen)
 	{
 		var other = screen == _home ? _settings : _home;
@@ -79,7 +56,7 @@ public partial class MainMenu : Control
 		screen.Show();
 		_fade?.Kill();
 		_fade = CreateTween();
-		_fade.TweenProperty(screen, "modulate", Colors.White, 0.2f)
+		_fade.TweenProperty(screen, TweenPaths.Modulate, Colors.White, 0.2f)
 			.SetTrans(Tween.TransitionType.Sine).SetEase(Tween.EaseType.Out);
 	}
 }

@@ -1,6 +1,6 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://c3cb6qdw0ygr3"]
 
-[ext_resource type="Script" path="res://core/ui/Overlay.cs" id="1_overlay"]
+[ext_resource type="Script" uid="uid://47k1dx54rky4" path="res://core/ui/Overlay.cs" id="1_overlay"]
 
 [node name="OverlayWindow" type="Control"]
 layout_mode = 3

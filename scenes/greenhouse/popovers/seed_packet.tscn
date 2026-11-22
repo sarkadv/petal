@@ -1,8 +1,8 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://da60a825vovl8"]
 
-[ext_resource type="Script" path="res://scenes/greenhouse/popovers/SeedPacket.cs" id="1_script"]
-[ext_resource type="PackedScene" path="res://scenes/greenhouse/packet_picture.tscn" id="2_picture"]
-[ext_resource type="PackedScene" path="res://scenes/greenhouse/count_badge.tscn" id="4_badge"]
+[ext_resource type="Script" uid="uid://bs7s0oa0uxroa" path="res://scenes/greenhouse/popovers/SeedPacket.cs" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://duy6akumjpgb3" path="res://scenes/greenhouse/packet_picture.tscn" id="2_picture"]
+[ext_resource type="PackedScene" uid="uid://dk7cvwolq6s4s" path="res://scenes/greenhouse/count_badge.tscn" id="4_badge"]
 
 [node name="SeedPacket" type="Button"]
 custom_minimum_size = Vector2(120, 156)

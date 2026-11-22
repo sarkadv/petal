@@ -89,6 +89,9 @@ public partial class Greenhouse : Control
 		_seedPopover.TapThrough = tools;
 		_fertilizerPopover.TapThrough = tools;
 		_infoPopover.TapThrough = tools;
+		_seedPopover.SeedPicked += PickSeed;
+		_fertilizerPopover.FertilizerPicked += PickFertilizer;
+		_effects.StemLanded += OnStemLanded;
 
 		GetNode<Button>("%BackButton").Pressed += GoBack;
 		_inventoryButton.Pressed += () => _inventory.Open(_game.Inventory);
@@ -141,9 +144,9 @@ public partial class Greenhouse : Control
 	{
 		SelectTool(tool);
 		if (tool == Tool.Seeds)
-			_seedPopover.ShowSeeds(button, _game.Seeds, _seed, PickSeed);
+			_seedPopover.ShowSeeds(button, _game.Seeds, _seed);
 		else
-			_fertilizerPopover.ShowFertilizers(button, _game.Fertilizers, _fertilizer, PickFertilizer);
+			_fertilizerPopover.ShowFertilizers(button, _game.Fertilizers, _fertilizer);
 	}
 
 	private void PickSeed(Seed seed)
@@ -214,7 +217,7 @@ public partial class Greenhouse : Control
 		int stems = _game.Harvest(view.Plot);
 		_stemsInFlight += stems;
 		UpdateInventoryBadge();
-		_effects.Harvest(view, leaves, flower, stems, _inventoryButton, OnStemLanded);
+		_effects.Harvest(view, leaves, flower, stems, _inventoryButton);
 	}
 
 	private void OnStemLanded()

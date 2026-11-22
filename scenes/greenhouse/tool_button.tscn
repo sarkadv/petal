@@ -1,7 +1,7 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://dfr1q6aaylb3i"]
 
-[ext_resource type="Script" path="res://scenes/greenhouse/ToolButton.cs" id="1_script"]
-[ext_resource type="PackedScene" path="res://scenes/greenhouse/count_badge.tscn" id="2_badge"]
+[ext_resource type="Script" uid="uid://5wlyotvq3t1a" path="res://scenes/greenhouse/ToolButton.cs" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://dk7cvwolq6s4s" path="res://scenes/greenhouse/count_badge.tscn" id="2_badge"]
 
 [node name="ToolButton" type="Button"]
 custom_minimum_size = Vector2(120, 144)

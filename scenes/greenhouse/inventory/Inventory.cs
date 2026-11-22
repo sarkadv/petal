@@ -29,13 +29,12 @@ public partial class Inventory : Overlay
 		_rows.Clear();
 		foreach (var flower in inventory.GroupBy(s => s.Stem.Kind))
 		{
-			var row = _rows.AddRow();
-			row.GetNode<Label>("%Heading").Text = flower.First().Stem.Flower.Name;
-			var items = row.GetNode<Container>("%Items");
+			var row = _rows.AddRow<ItemRow>();
+			row.Heading = flower.First().Stem.Flower.Name;
 			foreach (var (stem, count) in flower)
 			{
 				var item = _itemScene.Instantiate<InventoryItem>();
-				items.AddChild(item);
+				row.Items.AddChild(item);
 				item.SetItem(stem, count);
 			}
 		}

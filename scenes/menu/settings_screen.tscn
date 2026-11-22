@@ -1,7 +1,8 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://cstw4aqbajc8b"]
 
-[ext_resource type="Texture2D" path="res://ui/icons/arrow_left.svg" id="1_left"]
-[ext_resource type="Texture2D" path="res://ui/icons/arrow_right.svg" id="2_right"]
+[ext_resource type="Script" uid="uid://coqq7wtr5lrw5" path="res://scenes/menu/SettingsScreen.cs" id="3_script"]
+[ext_resource type="Texture2D" uid="uid://c0bcdt58vp1nn" path="res://ui/icons/arrow_left.svg" id="1_left"]
+[ext_resource type="Texture2D" uid="uid://d14qsu4meb6a" path="res://ui/icons/arrow_right.svg" id="2_right"]
 
 [node name="SettingsScreen" type="Control"]
 layout_mode = 3
@@ -10,6 +11,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("3_script")
 
 [node name="Margin" type="MarginContainer" parent="."]
 layout_mode = 1

@@ -21,8 +21,8 @@ differ from the doc, say so rather than silently diverging.
   - `core/catalogue/`: what exists in the game, loaded from `data/game_data.tres` (`GameData`, `FlowerData`,
 	`FlowerKind`, `FlowerColour`, `FertilizerKind`, `FertilizerData`).
   - `core/game/`: the game being played and its rules (`GameState`, `Plot`, `Seed`, `Stem`).
-  - `core/ui/`: helpers shared by screens (`ButtonExtensions`, `ControlExtensions` for the bounce, `Overlay` for
-	windows and popups that Back closes).
+  - `core/ui/`: helpers shared by screens (`ButtonExtensions`, `ControlExtensions` for the bounce, `TweenPaths` for
+	tweened properties, `Overlay` for windows and popups that Back closes).
 - `scenes/<area>/`: a scene's `.tscn`, its script and its assets together (e.g. `scenes/menu/`). A screen's sub-scenes
   go in subfolders (`scenes/greenhouse/popovers/`, `scenes/greenhouse/seed_stall/`), its art in `art/`.
 - `data/`: balancing data as Godot resources (`game_data.tres`: flower catalogue, prices, starting values).

@@ -1,9 +1,9 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://h6nyhboddoj0"]
 
-[ext_resource type="Script" path="res://scenes/greenhouse/popovers/SeedPopover.cs" id="1_script"]
-[ext_resource type="PackedScene" path="res://scenes/greenhouse/item_row.tscn" id="2_row"]
-[ext_resource type="PackedScene" path="res://scenes/greenhouse/popovers/seed_packet.tscn" id="3_packet"]
-[ext_resource type="Script" path="res://core/ui/RowList.cs" id="9_rows"]
+[ext_resource type="Script" uid="uid://chlwa43mlbwxx" path="res://scenes/greenhouse/popovers/SeedPopover.cs" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://b6brwee67vucw" path="res://scenes/greenhouse/item_row.tscn" id="2_row"]
+[ext_resource type="PackedScene" uid="uid://da60a825vovl8" path="res://scenes/greenhouse/popovers/seed_packet.tscn" id="3_packet"]
+[ext_resource type="Script" uid="uid://beelhwjqf8klv" path="res://core/ui/RowList.cs" id="9_rows"]
 
 [node name="SeedPopover" type="Control"]
 layout_mode = 3

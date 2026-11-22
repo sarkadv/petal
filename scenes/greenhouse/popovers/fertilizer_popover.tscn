@@ -1,8 +1,8 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://cnq7bdoyim568"]
 
-[ext_resource type="Script" path="res://scenes/greenhouse/popovers/FertilizerPopover.cs" id="1_script"]
-[ext_resource type="PackedScene" path="res://scenes/greenhouse/popovers/fertilizer_row.tscn" id="2_row"]
-[ext_resource type="Script" path="res://core/ui/RowList.cs" id="9_rows"]
+[ext_resource type="Script" uid="uid://cwoobsky54d0k" path="res://scenes/greenhouse/popovers/FertilizerPopover.cs" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://di87l18uad6m5" path="res://scenes/greenhouse/popovers/fertilizer_row.tscn" id="2_row"]
+[ext_resource type="Script" uid="uid://beelhwjqf8klv" path="res://core/ui/RowList.cs" id="9_rows"]
 
 [node name="FertilizerPopover" type="Control"]
 layout_mode = 3

@@ -2,8 +2,21 @@ using Godot;
 
 namespace Petal;
 
-/// <summary>The colours flowers come in (GAMEPLAY.md §4.4).</summary>
-public enum FlowerColour { Red, Pink, White, Yellow, Orange, Purple, Blue, Green }
+/// <summary>
+/// The colours flowers come in (GAMEPLAY.md §4.4).
+/// Data files store these as numbers, so never renumber an existing value.
+/// </summary>
+public enum FlowerColour
+{
+	Red = 0,
+	Pink = 1,
+	White = 2,
+	Yellow = 3,
+	Orange = 4,
+	Purple = 5,
+	Blue = 6,
+	Green = 7,
+}
 
 /// <summary>How each <see cref="FlowerColour"/> looks and is named.</summary>
 public static class FlowerColours

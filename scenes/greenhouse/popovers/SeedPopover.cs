@@ -8,7 +8,7 @@ namespace Petal;
 /// <summary>
 /// The seeds to choose from when Seeds is held (GAMEPLAY.md §4.2, GREENHOUSE.md §3), shown below the tool: a packet
 /// per seed in stock, in a row per flower under its name. A row with more colours than fit scrolls sideways, and
-/// more rows than fit scroll down, each with a scrollbar. Tapping a packet picks it.
+/// more rows than fit scroll down, each with a scrollbar. Tapping a packet closes it and raises <see cref="SeedPicked"/>.
 /// </summary>
 public partial class SeedPopover : ChoicesPopover
 {
@@ -19,6 +19,8 @@ public partial class SeedPopover : ChoicesPopover
 
 	[Export] private PackedScene _packetScene;
 
+	public event Action<Seed> SeedPicked;
+
 	private ScrollContainer _scroll;
 	private Vector2 _scrollAtPress;
 
@@ -28,17 +30,17 @@ public partial class SeedPopover : ChoicesPopover
 		_scroll = GetNode<ScrollContainer>("%Scroll");
 	}
 
-	public async void ShowSeeds(Control anchor, IEnumerable<(Seed Seed, int Count)> seeds, Seed? chosen, Action<Seed> picked)
+	public async void ShowSeeds(Control anchor, IEnumerable<(Seed Seed, int Count)> seeds, Seed? chosen)
 	{
 		Rows.Clear();
 		float rowWidth = RowWidth();
 		(SeedPacket Packet, ScrollContainer Row)? chosenPacket = null;
 		foreach (var flower in seeds.GroupBy(s => s.Seed.Kind))
 		{
-			var row = Rows.AddRow();
-			row.GetNode<Label>("%Heading").Text = flower.First().Seed.Flower.Name;
-			var rowScroll = row.GetNode<ScrollContainer>("%Scroll");
-			var packets = row.GetNode<Container>("%Items");
+			var row = Rows.AddRow<ItemRow>();
+			row.Heading = flower.First().Seed.Flower.Name;
+			var rowScroll = row.Scroll;
+			var packets = row.Items;
 			foreach (var (seed, count) in flower)
 			{
 				var packet = _packetScene.Instantiate<SeedPacket>();
@@ -46,7 +48,7 @@ public partial class SeedPopover : ChoicesPopover
 				packets.AddChild(packet);
 				packet.SetSeed(seed, count);
 				packet.ButtonDown += () => _scrollAtPress = ScrollOf(rowScroll);
-				packet.Pressed += () => OnPacketPressed(packet, rowScroll, picked);
+				packet.Pressed += () => OnPacketPressed(packet, rowScroll);
 				if (seed == chosen)
 					chosenPacket = (packet, rowScroll);
 			}
@@ -67,7 +69,7 @@ public partial class SeedPopover : ChoicesPopover
 		_scroll.EnsureControlVisible(shown.Packet);
 	}
 
-	private void OnPacketPressed(SeedPacket packet, ScrollContainer row, Action<Seed> picked)
+	private void OnPacketPressed(SeedPacket packet, ScrollContainer row)
 	{
 		// Letting go after dragging the packets along is a scroll, not a pick.
 		if (ScrollOf(row).DistanceTo(_scrollAtPress) > ScrollSlop)
@@ -75,7 +77,8 @@ public partial class SeedPopover : ChoicesPopover
 			packet.SetPressedNoSignal(!packet.ButtonPressed);
 			return;
 		}
-		Pick(picked, packet.Seed);
+		Hide();
+		SeedPicked?.Invoke(packet.Seed);
 	}
 
 	/// <summary>Room for a row's packets: the panel less its padding and the space kept for the scrollbar.</summary>

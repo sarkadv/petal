@@ -1,9 +1,9 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bgxd0kfwi4lof"]
 
-[ext_resource type="PackedScene" path="res://scenes/greenhouse/overlay_window.tscn" id="1_window"]
-[ext_resource type="Script" path="res://scenes/greenhouse/seed_stall/SeedStall.cs" id="2_script"]
-[ext_resource type="PackedScene" path="res://scenes/greenhouse/seed_stall/stall_row.tscn" id="3_row"]
-[ext_resource type="Texture2D" path="res://ui/icons/coin.svg" id="4_coin"]
+[ext_resource type="PackedScene" uid="uid://c3cb6qdw0ygr3" path="res://scenes/greenhouse/overlay_window.tscn" id="1_window"]
+[ext_resource type="Script" uid="uid://5vi5r5mjv0lq" path="res://scenes/greenhouse/seed_stall/SeedStall.cs" id="2_script"]
+[ext_resource type="PackedScene" uid="uid://bhd1mprqdlxae" path="res://scenes/greenhouse/seed_stall/stall_row.tscn" id="3_row"]
+[ext_resource type="Texture2D" uid="uid://bwaxh1i17rxrc" path="res://ui/icons/coin.svg" id="4_coin"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_tabs"]
 

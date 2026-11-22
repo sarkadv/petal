@@ -177,7 +177,7 @@ menu, and **Play** continues the same game.
 | `core/ui/ControlExtensions.cs` | The bounce of the pots and the basket |
 | `scenes/greenhouse/popovers/seed_popover.tscn`, `SeedPopover.cs`, `seed_packet.tscn`, `SeedPacket.cs` | The popup with the seeds to choose from |
 | `scenes/greenhouse/packet_picture.tscn` | A seed packet with the flower in its colour, in the seed popup and the planting animation |
-| `scenes/greenhouse/item_row.tscn` | A row of items under a flower's name that scrolls sideways, used by the seed popup and the inventory |
+| `scenes/greenhouse/item_row.tscn`, `ItemRow.cs` | A row of items under a flower's name that scrolls sideways, used by the seed popup and the inventory |
 | `core/ui/RowList.cs` | The list of rows with a thin line between them in the two choices popups and the inventory |
 | `scenes/greenhouse/overlay_window.tscn` | Shared frame of the inventory and the garden supplies window: dim, card, title and **Close** |
 | `scenes/greenhouse/inventory/inventory.tscn`, `Inventory.cs`, `inventory_item.tscn`, `InventoryItem.cs` | The inventory window |

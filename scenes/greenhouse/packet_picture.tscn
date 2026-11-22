@@ -1,7 +1,7 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://duy6akumjpgb3"]
 
-[ext_resource type="Texture2D" path="res://scenes/greenhouse/art/seed_packet.svg" id="1_packet"]
-[ext_resource type="Texture2D" path="res://scenes/greenhouse/art/bloom.svg" id="2_bloom"]
+[ext_resource type="Texture2D" uid="uid://dsww3ygbnlpv6" path="res://scenes/greenhouse/art/seed_packet.svg" id="1_packet"]
+[ext_resource type="Texture2D" uid="uid://l5t1x3v2vlt0" path="res://scenes/greenhouse/art/bloom.svg" id="2_bloom"]
 
 [node name="PacketPicture" type="TextureRect"]
 offset_right = 84.0

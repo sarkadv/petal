@@ -21,9 +21,9 @@ public partial class RowList : VBoxContainer
 		}
 	}
 
-	public Control AddRow()
+	public T AddRow<T>() where T : Control
 	{
-		var row = _rowScene.Instantiate<Control>();
+		var row = _rowScene.Instantiate<T>();
 		row.GetNode<Control>("%Line").Visible = !IsEmpty;
 		AddChild(row);
 		return row;

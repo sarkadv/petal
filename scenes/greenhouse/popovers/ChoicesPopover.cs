@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using Godot;
 
@@ -6,8 +5,8 @@ namespace Petal;
 
 /// <summary>
 /// A popover listing things to choose from in a <see cref="RowList"/>, or a "you have none" text when the list is
-/// empty (GREENHOUSE.md §3). Picking one closes it. <see cref="SeedPopover"/> and <see cref="FertilizerPopover"/>
-/// fill in the rows.
+/// empty (GREENHOUSE.md §3). <see cref="SeedPopover"/> and <see cref="FertilizerPopover"/> fill in the rows, and
+/// close and raise their own event when one is picked.
 /// </summary>
 public abstract partial class ChoicesPopover : Popover
 {
@@ -25,11 +24,5 @@ public abstract partial class ChoicesPopover : Popover
 	{
 		_empty.Visible = Rows.IsEmpty;
 		return ShowBy(anchor, width);
-	}
-
-	protected void Pick<T>(Action<T> picked, T choice)
-	{
-		Hide();
-		picked(choice);
 	}
 }

@@ -1,9 +1,9 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://dg1wv0whf2sxo"]
 
-[ext_resource type="Script" path="res://scenes/greenhouse/inventory/InventoryItem.cs" id="1_script"]
-[ext_resource type="Texture2D" path="res://scenes/greenhouse/art/bloom.svg" id="2_bloom"]
-[ext_resource type="Texture2D" path="res://ui/icons/star.svg" id="3_star"]
-[ext_resource type="PackedScene" path="res://scenes/greenhouse/count_badge.tscn" id="4_badge"]
+[ext_resource type="Script" uid="uid://251tbu1fxm5m" path="res://scenes/greenhouse/inventory/InventoryItem.cs" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://l5t1x3v2vlt0" path="res://scenes/greenhouse/art/bloom.svg" id="2_bloom"]
+[ext_resource type="Texture2D" uid="uid://msqd5f1fykqc" path="res://ui/icons/star.svg" id="3_star"]
+[ext_resource type="PackedScene" uid="uid://dk7cvwolq6s4s" path="res://scenes/greenhouse/count_badge.tscn" id="4_badge"]
 
 [node name="InventoryItem" type="Control"]
 custom_minimum_size = Vector2(120, 156)

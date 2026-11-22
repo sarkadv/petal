@@ -76,7 +76,7 @@ public partial class PlotView : Button
 			var plant = _plants[i].Plant;
 			plant.PivotOffset = plant.Size / 2;
 			plant.Scale = Vector2.Zero;
-			CreateTween().TweenProperty(plant, "scale", Vector2.One, 0.3f)
+			CreateTween().TweenProperty(plant, TweenPaths.Scale, Vector2.One, 0.3f)
 				.SetDelay(delay + i * 0.06f).SetTrans(Tween.TransitionType.Back).SetEase(Tween.EaseType.Out);
 		}
 	}
@@ -95,6 +95,6 @@ public partial class PlotView : Button
 	private void FadeIn(CanvasItem soil, float delay)
 	{
 		soil.Modulate = Colors.Transparent;
-		CreateTween().TweenProperty(soil, "modulate:a", 1f, 0.25f).SetDelay(delay);
+		CreateTween().TweenProperty(soil, TweenPaths.ModulateAlpha, 1f, 0.25f).SetDelay(delay);
 	}
 }

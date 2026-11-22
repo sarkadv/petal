@@ -1,8 +1,8 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bhd1mprqdlxae"]
 
-[ext_resource type="Script" path="res://scenes/greenhouse/seed_stall/StallRow.cs" id="1_script"]
-[ext_resource type="Texture2D" path="res://ui/icons/dot.svg" id="2_dot"]
-[ext_resource type="Texture2D" path="res://ui/icons/coin.svg" id="3_coin"]
+[ext_resource type="Script" uid="uid://bgi2tlynnuwy" path="res://scenes/greenhouse/seed_stall/StallRow.cs" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://ckqoaueice35w" path="res://ui/icons/dot.svg" id="2_dot"]
+[ext_resource type="Texture2D" uid="uid://bwaxh1i17rxrc" path="res://ui/icons/coin.svg" id="3_coin"]
 
 [node name="StallRow" type="PanelContainer"]
 theme_type_variation = &"FieldPanel"

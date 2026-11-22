@@ -85,6 +85,9 @@ public partial class PotEffects : Control
 	private const float ShrinkScale = 0.3f;
 	private const float ShrinkSeconds = 0.25f;
 
+	/// <summary>A harvested flower reached the basket (see <see cref="Harvest"/>).</summary>
+	public event Action StemLanded;
+
 	[Export] private PackedScene _packet;
 	[Export] private Texture2D _can;
 	[Export] private Texture2D _sack;
@@ -148,12 +151,12 @@ public partial class PotEffects : Control
 		tool.Position = raised;
 		tool.Rotation = TrowelRaisedAngle;
 		var tween = Appear(tool);
-		tween.TweenProperty(tool, "position", dug, TipSeconds).SetEase(Tween.EaseType.In);
-		tween.Parallel().TweenProperty(tool, "rotation", TrowelDugAngle, TipSeconds);
+		tween.TweenProperty(tool, TweenPaths.Position, dug, TipSeconds).SetEase(Tween.EaseType.In);
+		tween.Parallel().TweenProperty(tool, TweenPaths.Rotation, TrowelDugAngle, TipSeconds);
 		float dugIn = HitSeconds - AppearSeconds - TipSeconds;
 		tween.TweenInterval(dugIn);
-		tween.TweenProperty(tool, "position", raised, LeaveSeconds).SetEase(Tween.EaseType.Out);
-		tween.Parallel().TweenProperty(tool, "rotation", TrowelFlickAngle, LeaveSeconds);
+		tween.TweenProperty(tool, TweenPaths.Position, raised, LeaveSeconds).SetEase(Tween.EaseType.Out);
+		tween.Parallel().TweenProperty(tool, TweenPaths.Rotation, TrowelFlickAngle, LeaveSeconds);
 		FadeOut(tween.Parallel(), tool);
 
 		for (int i = 0; i < FlickedClods; i++)
@@ -170,10 +173,10 @@ public partial class PotEffects : Control
 	}
 
 	/// <summary>
-	/// The flowers lift out of the pot and fly to the basket one by one, a flower per stem, calling
-	/// <paramref name="landed"/> as each arrives and bouncing the basket. The leaves shrink away.
+	/// The flowers lift out of the pot and fly to the basket one by one, a flower per stem, raising
+	/// <see cref="StemLanded"/> as each arrives and bouncing the basket. The leaves shrink away.
 	/// </summary>
-	public void Harvest(PlotView pot, Control leaves, Color flower, int stems, Control basket, Action landed)
+	public void Harvest(PlotView pot, Control leaves, Color flower, int stems, Control basket)
 	{
 		var starts = pot.Blooms.Select(Centre).ToArray();
 		var to = Centre(basket);
@@ -184,10 +187,10 @@ public partial class PotEffects : Control
 			var head = Sprite(_bloom, Vector2.One * FlowerSize, flower);
 			var tween = Fly(head, from, to, FlowerLift, i * FlowerGapSeconds, FlowerFlightSeconds,
 				Tween.EaseType.InOut);
-			tween.Parallel().TweenProperty(head, "scale", Vector2.One * FlowerLandingScale, FlowerFlightSeconds);
+			tween.Parallel().TweenProperty(head, TweenPaths.Scale, Vector2.One * FlowerLandingScale, FlowerFlightSeconds);
 			tween.TweenCallback(Callable.From(() =>
 			{
-				landed();
+				StemLanded?.Invoke();
 				basket.Bounce(BasketBounce);
 			}));
 			tween.TweenCallback(new Callable(head, Node.MethodName.QueueFree));
@@ -205,17 +208,17 @@ public partial class PotEffects : Control
 		var centre = pot + gesture.Hover;
 		SetCentre(tool, centre);
 		var tween = Appear(tool);
-		tween.TweenProperty(tool, "rotation", gesture.Angle, TipSeconds)
+		tween.TweenProperty(tool, TweenPaths.Rotation, gesture.Angle, TipSeconds)
 			.SetTrans(Tween.TransitionType.Sine).SetEase(Tween.EaseType.Out);
 		// Stays tipped until the last bit poured from it has landed (see Pour).
 		float pouring = HitSeconds + FallSeconds - AppearSeconds - TipSeconds;
 		if (gesture.Shake)
 			for (int i = 0; i < ShakeWiggles; i++)
-				tween.TweenProperty(tool, "rotation", gesture.Angle + (i % 2 == 0 ? ShakeAngle : -ShakeAngle),
+				tween.TweenProperty(tool, TweenPaths.Rotation, gesture.Angle + (i % 2 == 0 ? ShakeAngle : -ShakeAngle),
 					pouring / ShakeWiggles);
 		else
 			tween.TweenInterval(pouring);
-		tween.TweenProperty(tool, "rotation", 0f, LeaveSeconds);
+		tween.TweenProperty(tool, TweenPaths.Rotation, 0f, LeaveSeconds);
 		FadeOut(tween.Parallel(), tool);
 		// The tool turns around its centre, so the spout does too; the art is drawn smaller over the pot.
 		return centre + (gesture.Spout * CameoScale).Rotated(gesture.Angle);
@@ -244,7 +247,7 @@ public partial class PotEffects : Control
 		plants.PivotOffset = plants.Size / 2;
 		var tween = plants.CreateTween();
 		tween.TweenInterval(delay);
-		tween.TweenProperty(plants, "scale", Vector2.One * ShrinkScale, ShrinkSeconds)
+		tween.TweenProperty(plants, TweenPaths.Scale, Vector2.One * ShrinkScale, ShrinkSeconds)
 			.SetTrans(Tween.TransitionType.Back).SetEase(Tween.EaseType.In);
 		FadeOut(tween.Parallel(), plants, ShrinkSeconds);
 	}
@@ -260,7 +263,7 @@ public partial class PotEffects : Control
 		SetCentre(sprite, from);
 		var tween = sprite.CreateTween();
 		tween.TweenInterval(delay);
-		tween.TweenProperty(sprite, "modulate:a", 1f, FlyFadeInSeconds);
+		tween.TweenProperty(sprite, TweenPaths.ModulateAlpha, 1f, FlyFadeInSeconds);
 		// A quadratic Bézier curve: as t goes 0 → 1 it sets off from `from` towards `bend`, then curves into `to`.
 		Vector2 Curve(float t) => from.Lerp(bend, t).Lerp(bend.Lerp(to, t), t);
 		tween.TweenMethod(Callable.From<float>(t => SetCentre(sprite, Curve(t))), 0f, 1f, seconds)
@@ -271,14 +274,14 @@ public partial class PotEffects : Control
 	private static Tween Appear(Control sprite)
 	{
 		var tween = sprite.CreateTween();
-		tween.TweenProperty(sprite, "modulate:a", 1f, AppearSeconds);
+		tween.TweenProperty(sprite, TweenPaths.ModulateAlpha, 1f, AppearSeconds);
 		return tween;
 	}
 
 	/// <summary>Fades the sprite out where the tween leaves it and removes it.</summary>
 	private static void FadeOut(Tween tween, Control sprite, float seconds = LeaveSeconds)
 	{
-		tween.TweenProperty(sprite, "modulate:a", 0f, seconds);
+		tween.TweenProperty(sprite, TweenPaths.ModulateAlpha, 0f, seconds);
 		tween.TweenCallback(new Callable(sprite, Node.MethodName.QueueFree));
 	}
 

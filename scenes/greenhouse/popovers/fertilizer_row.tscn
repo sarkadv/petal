@@ -1,6 +1,6 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://di87l18uad6m5"]
 
-[ext_resource type="PackedScene" path="res://scenes/greenhouse/count_badge.tscn" id="1_badge"]
+[ext_resource type="PackedScene" uid="uid://dk7cvwolq6s4s" path="res://scenes/greenhouse/count_badge.tscn" id="1_badge"]
 
 [node name="FertilizerRow" type="VBoxContainer"]
 mouse_filter = 2

@@ -21,10 +21,10 @@ public partial class InfoPopover : Popover
 	}
 
 	/// <param name="text">Already translated; may span several lines.</param>
-	public void ShowText(Control anchor, string text)
+	public async void ShowText(Control anchor, string text)
 	{
 		_text.Text = text;
-		_ = ShowBy(anchor, Panel.GetCombinedMinimumSize().X);
+		await ShowBy(anchor, Panel.GetCombinedMinimumSize().X);
 	}
 
 	protected override Vector2 PositionBy(Rect2 anchor, Vector2 size)
